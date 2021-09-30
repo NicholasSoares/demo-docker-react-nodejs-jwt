@@ -29,8 +29,8 @@ module.exports.findById = async (productId) => {
 module.exports.list = async (queryLimit, queryOffset, orderByField, orderByDirection) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!allowedFilterFields.contains(orderByField)) orderByField = 'id';
-            if(!allowedOrderingDirections.contains(orderByDirection)) orderByDirection = 'ASC';
+            if(!allowedFilterFields.includes(orderByField)) orderByField = 'id';
+            if(!allowedOrderingDirections.includes(orderByDirection)) orderByDirection = 'ASC';
 
             let result = await products.findAll({
                 offset: queryLimit,
