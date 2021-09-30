@@ -1,0 +1,12 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/product-manager/node_modules
+/product-manager/.idea
+/product-manager-api/node_modules
+/product-manager-api/logs/*.log
+/product-manager-api/logs/*.json
+/product-manager-api/logs/*.gz
+/product-manager-api/.idea
+/database/tmp/postgres
+/.idea

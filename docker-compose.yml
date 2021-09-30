@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  product-manager:
+    ports:
+      - '3000:3000'
+    build:
+      context: ./product-manager
+      dockerfile: Dockerfile
+    container_name: product-manager
+    depends_on:
+      - database
+      - product-manager-api
+    volumes:
+      - './product-manager:/var/www'
+      - '/var/www/node_modules'
+    networks:
+      - app-network
+
+  product-manager-api:
+    ports:
+      - '8000:3000'
+    build:
+      context: ./product-manager-api
+      dockerfile: Dockerfile
+    container_name: product-manager-api
+    depends_on:
+      - database
+    volumes:
+      - './product-manager-api:/var/www'
+      - '/var/www/node_modules'
+    networks:
+      - app-network
+      
+  database:
+    hostname: database
+    container_name: "database"
+    image: postgres:12.3-alpine
+    user: root
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: product_control
+      POSTGRES_PASSWORD: root
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./database/tmp/postgres:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+  esdata:
+    driver: local
+  dbdata:
+    driver: local
