@@ -4,6 +4,12 @@ const { products } = require('../models/productsModel');
 const sequelize = require('../../config/databaseConfiguration');
 
 /**
+ * Allowed Filters to be used on listing
+ */
+const allowedFilterFields = ['id', 'price', 'name', 'void_at', 'manufactured_at', 'is_perishable'];
+const allowedOrderingDirections = ['ASC', 'DESC'];
+
+/**
  * Find product with given id
  */
 module.exports.findById = async (productId) => {
@@ -23,8 +29,8 @@ module.exports.findById = async (productId) => {
 module.exports.list = async (queryLimit, queryOffset, orderByField, orderByDirection) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!orderByField) orderByField = 'id';
-            if(!orderByDirection) orderByDirection = 'ASC';
+            if(!allowedFilterFields.contains(orderByField)) orderByField = 'id';
+            if(!allowedOrderingDirections.contains(orderByDirection)) orderByDirection = 'ASC';
 
             let result = await products.findAll({
                 offset: queryLimit,
