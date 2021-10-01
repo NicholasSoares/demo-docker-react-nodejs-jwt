@@ -2,28 +2,22 @@ FROM node:16.2.0-alpine3.13
 
 RUN apk add --no-cache libc6-compat
 
-RUN npm i -g npm && npm -v
-
-RUN mkdir -p /var/www
 WORKDIR /var/www
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S reactjs -u 1001
+RUN chown -R node:node /var/www
 
-COPY package*.json ./
+COPY --chown=node:node package.json .
 
-RUN chown -R reactjs:nodejs /var/www
-
-USER reactjs
+COPY --chown=node:node package-lock.json .
 
 RUN npm install
 
-RUN mkdir /home/reactjs/.npm-global
-ENV NPM_CONFIG_PREFIX=/home/reactjs/.npm-global
-ENV PATH=$PATH:/home/reactjs/.npm-global/bin
+COPY --chown=node:node . .
 
-COPY . .
+USER node
 
-EXPOSE 3000
+RUN mkdir /home/node/.npm-global
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH=$PATH:/home/node/.npm-global/bin
 
-CMD [ "npm", "start" ]
+CMD npm start
