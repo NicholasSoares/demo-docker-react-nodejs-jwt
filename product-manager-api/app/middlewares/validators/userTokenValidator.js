@@ -33,10 +33,6 @@ module.exports = [
                 req.userId = decoded.id;
                 return next();
             });
-
-            return res.status(403).json(
-                { auth: false, message: 'Invalid or expired token.' }
-            );
         }
         catch (e){
             return next(e);
