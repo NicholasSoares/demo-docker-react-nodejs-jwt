@@ -25,7 +25,7 @@ module.exports = [
 
             jwt.verify(token, process.env.SECRET, function(err, decoded) {
                 if (err) {
-                    return res.status(500).json(
+                    return res.status(400).json(
                         { auth: false, message: 'Failed to authenticate token.' }
                     );
                 }
