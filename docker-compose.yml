@@ -2,49 +2,50 @@ version: '3.8'
 
 services:
   product-manager:
-    ports:
-      - '3000:3000'
+    container_name: product-manager
     build:
       context: ./product-manager
       dockerfile: Dockerfile
-    container_name: product-manager
     depends_on:
       - database
       - product-manager-api
     volumes:
       - './product-manager:/var/www'
       - '/var/www/node_modules'
+    ports:
+      - '3000:3000'
     networks:
       - app-network
 
   product-manager-api:
-    ports:
-      - '8000:3000'
+    container_name: product-manager-api
     build:
       context: ./product-manager-api
       dockerfile: Dockerfile
-    container_name: product-manager-api
     depends_on:
       - database
     volumes:
       - './product-manager-api:/var/www'
       - '/var/www/node_modules'
+    ports:
+      - '8000:3000'
     networks:
       - app-network
       
   database:
-    hostname: database
     container_name: "database"
+    hostname: database
     image: postgres:12.3-alpine
+    restart: always
     user: root
     environment:
       POSTGRES_USER: root
       POSTGRES_DB: product_control
       POSTGRES_PASSWORD: root
-    ports:
-      - '5432:5432'
     volumes:
       - ./database/tmp/postgres:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
     networks:
       - app-network
 
