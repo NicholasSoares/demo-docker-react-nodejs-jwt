@@ -7,7 +7,6 @@ library.add(fab, fas);
 
 class ProductsTableHeader extends Component {
 
-
 /**
  * Check if field is active in sorting and highligh it
  */
@@ -45,6 +44,7 @@ class ProductsTableHeader extends Component {
       </tr>
     );
   }
+
 }
 
 export default ProductsTableHeader;

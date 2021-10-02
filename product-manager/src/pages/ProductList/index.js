@@ -44,17 +44,27 @@ class ProductList extends Component {
           offset: this.state.offset,
           field: this.state.field,
           direction: this.state.direction,
+          error: null,
         }
       });
 
       this.setState({ 
         products: response.data.products,
-        productCount: response.data.totalProducts
+        productCount: response.data.totalProducts,
+        error: null
       });
 
     } catch (err) {
-      logout();
-      this.props.history.push("/");
+      if([403].includes(err.response?.status)){
+        logout();
+        this.props.history.push("/");
+      }
+      else{
+        this.setState({
+          error:
+            "Erro interno do servidor, tente novamente mais tarde."
+        });
+      }
     }
   }
 
@@ -89,6 +99,7 @@ class ProductList extends Component {
     return (
       <Container>
         <div className="container">
+          {this.state.error && <p className={'error'}>{this.state.error}</p>}
           <table className="table table-striped table-bordered">
             <thead>
               <ProductsTableHeader field={this.state.field} direction={this.state.direction} sortProducts={this.sortProducts} />
@@ -103,6 +114,7 @@ class ProductList extends Component {
       </Container>
     );
   }
+  
 }
 
 export default withRouter(ProductList);
