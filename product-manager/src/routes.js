@@ -5,6 +5,8 @@ import { isAuthenticated } from "./services/auth";
 
 import SignIn from "./pages/SignIn";
 import ProductList from "./pages/ProductList";
+import ProductEdit from "./pages/ProductEdit";
+import ProductCreate from "./pages/ProductCreate";
 import NotFound from "./pages/NotFound";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -27,7 +29,7 @@ const GuestOnlyRoute = ({ component: Component, ...rest }) => (
       !isAuthenticated() ? (
         <Component {...props} />
       ) : (
-        <Redirect to={{ pathname: "/app", state: { from: props.location } }} />
+        <Redirect to={{ pathname: "/products", state: { from: props.location } }} />
       )
     }
   />
@@ -35,9 +37,14 @@ const GuestOnlyRoute = ({ component: Component, ...rest }) => (
 
 const Routes = () => (
   <BrowserRouter>
+    <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <a className="navbar-brand mx-auto" href="#">Product Manager System</a>
+    </nav>
     <Switch>
       <GuestOnlyRoute exact path="/" component={SignIn} />
-      <PrivateRoute path="/app" component={ProductList} />
+      <PrivateRoute path="/products" component={ProductList} />
+      <PrivateRoute path="/product/edit/:id" component={ProductEdit} />
+      <PrivateRoute path="/product/create" component={ProductCreate} />
       <Route path="*" component={NotFound} />
     </Switch>
   </BrowserRouter>
