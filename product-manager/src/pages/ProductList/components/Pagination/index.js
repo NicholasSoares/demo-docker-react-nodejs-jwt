@@ -21,7 +21,7 @@ class Pagination extends Component {
    */
   navigateBack = () => {
     if(this.canGoBack(this.props.index)){
-      this.props.changePage(this.props.index-10);
+      this.props.changePage(this.props.index-this.props.offset);
     }
   }
 
@@ -30,7 +30,7 @@ class Pagination extends Component {
    */
   navigateForward = () => {
     if(this.canGoForward(this.props.index, this.props.offset, this.props.productCount)){
-      this.props.changePage(this.props.index+10);
+      this.props.changePage(this.props.index+this.props.offset);
     }
   }
 

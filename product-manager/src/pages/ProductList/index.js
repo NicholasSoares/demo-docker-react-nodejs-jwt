@@ -5,16 +5,13 @@ import { Container } from "./styles";
 import { logout } from "../../services/auth";
 import ProductsTableList from "./components/ProductsTableList";
 import Pagination from "./components/Pagination";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { fas } from "@fortawesome/free-solid-svg-icons";
-library.add(fab, fas);
+import ProductsTableHeader from "./components/ProductsTableHeader";
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
     this.changePage.bind(this);
+    this.sortProducts.bind(this);
   }
 
   /**
@@ -80,13 +77,6 @@ class ProductList extends Component {
   }
 
   /**
-   * Check if field is active in sorting and highligh it
-   */
-  checkAndSetActiveField = (name) => {
-    return (this.state.field == name)? 'text-primary' : '';
-  }
-
-  /**
    * Navigate in the product list
    */
   changePage = (indexCount) => {
@@ -95,31 +85,13 @@ class ProductList extends Component {
     });
   }
 
-  /**
-   * Set ordering icon for visual guidance
-   */
-  setOrderingDirectionIcon = (name) => {
-    if (this.state.field == name ){
-        return (this.state.direction == 'ASC')?
-        <FontAwesomeIcon icon={["fas", "sort-alpha-up"]} />:
-        <FontAwesomeIcon icon={["fas", "sort-alpha-down"]} />;
-    }
-  }
-
   render() {
     return (
       <Container>
         <div className="container">
           <table className="table table-striped table-bordered">
             <thead>
-              <tr>
-                <th scope="col" className={this.checkAndSetActiveField('id')} onClick={ (e) => {this.sortProducts('id')} }>{this.setOrderingDirectionIcon('id')} ID</th>
-                <th scope="col" className={this.checkAndSetActiveField('name')} onClick={ (e) => {this.sortProducts('name')} }>{this.setOrderingDirectionIcon('name')} Name</th>
-                <th scope="col" className={this.checkAndSetActiveField('price')} onClick={ (e) => {this.sortProducts('price')} }>{this.setOrderingDirectionIcon('price')} Price</th>
-                <th scope="col" className={this.checkAndSetActiveField('is_perishable')} onClick={ (e) => {this.sortProducts('is_perishable')} }>{this.setOrderingDirectionIcon('is_perishable')} Is Perishable</th>
-                <th scope="col" className={this.checkAndSetActiveField('void_at')} onClick={ (e) => {this.sortProducts('void_at')} }>{this.setOrderingDirectionIcon('void_at')} Void At</th>
-                <th scope="col" className={this.checkAndSetActiveField('manufactured_at')} onClick={ (e) => {this.sortProducts('manufactured_at')} }>{this.setOrderingDirectionIcon('manufactured_at')} Manufactured At</th>
-              </tr>
+              <ProductsTableHeader field={this.state.field} direction={this.state.direction} sortProducts={this.sortProducts} />
             </thead>
             <tbody>
               <ProductsTableList products={this.state.products} />
