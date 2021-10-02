@@ -14,7 +14,7 @@ module.exports.listProducts = async (req,res,next) => {
             req.query.direction);
 
         return res.status(200).json(
-            { products: products }
+            { products: products.rows, totalProducts: products.count }
         );
     }
     catch(e){

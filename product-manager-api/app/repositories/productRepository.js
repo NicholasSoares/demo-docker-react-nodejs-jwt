@@ -32,7 +32,7 @@ module.exports.list = async (queryLimit, queryOffset, orderByField, orderByDirec
             if(!allowedFilterFields.includes(orderByField)) orderByField = 'id';
             if(!allowedOrderingDirections.includes(orderByDirection)) orderByDirection = 'ASC';
 
-            let result = await products.findAll({
+            let result = await products.findAndCountAll({
                 offset: queryLimit,
                 limit: queryOffset,
                 order: [
