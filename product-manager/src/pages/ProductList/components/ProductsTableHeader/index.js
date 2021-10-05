@@ -41,6 +41,7 @@ class ProductsTableHeader extends Component {
         <th scope="col" className={this.setActive('is_perishable')} onClick={ (e) => {this.orderBy('is_perishable')} }>{this.setIcon('is_perishable')} Is Perishable</th>
         <th scope="col" className={this.setActive('void_at')} onClick={ (e) => {this.orderBy('void_at')} }>{this.setIcon('void_at')} Void At</th>
         <th scope="col" className={this.setActive('manufactured_at')} onClick={ (e) => {this.orderBy('manufactured_at')} }>{this.setIcon('manufactured_at')} Manufactured At</th>
+        <th scope="col" >Actions</th>
       </tr>
     );
   }

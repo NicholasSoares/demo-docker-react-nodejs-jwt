@@ -1,4 +1,6 @@
 import React from "react";
+import UpdateProductButton from "../UpdateProductButton";
+import RemoveProductButton from "../RemoveProductButton";
 
 const intlMonetary = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -19,6 +21,10 @@ const ProductsTableList = ({ products }) =>
       <td>{product.is_perishable.toString()}</td>
       <td>{(product.void_at)? product.void_at.toString() : "None" }</td>
       <td>{product.manufactured_at.toString()}</td>
+      <td>
+        <UpdateProductButton productId={product.id}></UpdateProductButton>
+        <RemoveProductButton productId={product.id}></RemoveProductButton>
+      </td>
     </tr>
   )
 );

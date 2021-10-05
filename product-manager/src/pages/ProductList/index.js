@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import api from "../../services/api";
 import { Container } from "./styles";
 import { logout } from "../../services/auth";
@@ -99,6 +99,7 @@ class ProductList extends Component {
     return (
       <Container>
         <div className="container">
+        <h4 className="mb-3">Product Listing</h4>
           {this.state.error && <p className={'error'}>{this.state.error}</p>}
           <table className="table table-striped table-bordered">
             <thead>

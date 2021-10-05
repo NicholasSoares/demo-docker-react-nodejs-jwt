@@ -7,7 +7,7 @@ const productRepository = require('../../repositories/productRepository');
  * Verify if login form have all fields filled and valid
  */
 module.exports = [
-    body('name').notEmpty().trim().escape().isLength({ min: 5 }),
+    body('name').notEmpty().trim().escape().isLength({ min: 1 }),
     body('price').notEmpty().isInt({ min:0}),
     body('is_perishable').toBoolean(),
     body('manufactured_at').notEmpty().isISO8601().toDate(),
