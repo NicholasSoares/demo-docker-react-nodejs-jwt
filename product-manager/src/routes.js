@@ -48,9 +48,9 @@ const GuessContainer = () => (
       </div>
     </nav>
     <Switch>
-      <PrivateRoute path="/products" component={ProductList} />
-      <PrivateRoute path="/product/edit/:id" component={ProductEdit} />
-      <PrivateRoute path="/product/create" component={ProductCreate} />
+      <PrivateRoute exact path="/products" component={ProductList} />
+      <PrivateRoute exact path="/product/edit/:id" component={ProductEdit} />
+      <PrivateRoute exact path="/product/create" component={ProductCreate} />
       <PrivateRoute path="*" component={NotFound} />
     </Switch>
   </div>
