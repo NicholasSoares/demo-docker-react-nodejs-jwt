@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../services/auth";
+import Swal from 'sweetalert2';
 
 class SignOut extends Component {
 
@@ -9,7 +10,13 @@ class SignOut extends Component {
    */
   logoutApp(e) {
     e.preventDefault();
+    Swal.fire({
+      allowOutsideClick : false,
+      showConfirmButton: false
+    });
+    Swal.showLoading();
     logout();
+    Swal.close();
     this.props.history.push("/");
   }
 
