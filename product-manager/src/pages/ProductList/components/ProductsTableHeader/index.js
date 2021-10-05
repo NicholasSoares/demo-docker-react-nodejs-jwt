@@ -11,15 +11,15 @@ class ProductsTableHeader extends Component {
  * Check if field is active in sorting and highligh it
  */
   setActive = (name) => {
-    return (this.props.field == name)? 'text-primary' : '';
+    return (this.props.field === name)? 'text-primary' : '';
   }
 
 /**
  * Set ordering icon for visual guidance
  */
   setIcon = (name) => {
-    if (this.props.field == name ){
-        return (this.props.direction == 'ASC')?
+    if (this.props.field === name ){
+        return (this.props.direction === 'ASC')?
         <FontAwesomeIcon icon={["fas", "sort-alpha-up"]} />:
         <FontAwesomeIcon icon={["fas", "sort-alpha-down"]} />;
     }

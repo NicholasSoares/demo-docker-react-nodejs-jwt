@@ -5,6 +5,7 @@ import * as dayjs from 'dayjs';
 import api from "../../services/api";
 import { logout } from "../../services/auth";
 import { Container } from "./styles";
+import Swal from 'sweetalert2';
 
 class ProductCreate extends Component {
   constructor(props) {
@@ -19,17 +20,8 @@ class ProductCreate extends Component {
       manufactured_at: dayjs().format('YYYY-MM-DD'),
       void_at: '',
       is_perishable: false,
-      error: undefined,
-      success: undefined,
     }
   }
-
-/**
- * Set current user sucess/error message displayed on the page
- */
-  showMessageForUser = (messageInfo) => {
-    this.setState({ error: messageInfo?.error, success: messageInfo?.success }); 
-  };
 
 /**
  * Format if needed and set name field state
@@ -112,20 +104,37 @@ class ProductCreate extends Component {
   handleProductCreate = async (e) => {
     e.preventDefault();
     if (!this.validateCreateFormRequest()) {
-      this.showMessageForUser({ error: "Verifique os dados informados e tente novamente."});
+      Swal.fire({
+        text: 'Verifique os dados informados e tente novamente.',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      });
     } else {
       try {
+        Swal.fire({
+          allowOutsideClick : false,
+          showConfirmButton: false
+        });
+        Swal.showLoading();
         await api.post("/product", this.getRequestBodyData());
-        this.showMessageForUser({ success: "Produto criado com sucesso!" });
+        Swal.close();
+        Swal.fire({
+          text: 'Produto criado com sucesso!',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        });
       } catch (err) {
         if([403].includes(err.response?.status)){
+          Swal.close();
           logout();
           this.props.history.push("/");
         }
         else{
-          this.showMessageForUser({
-            error:
-              "Erro interno do servidor, tente novamente mais tarde." 
+          Swal.close();
+          Swal.fire({
+            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
         }
       }
@@ -137,8 +146,6 @@ class ProductCreate extends Component {
       <Container>
         <div className="container">
           <h4 className="mb-3">Product Creation</h4>
-          {this.state.error && <p className="error">{this.state.error}</p>}
-          {this.state.success && <p className="success">{this.state.success}</p>}
           <form onSubmit={this.handleProductCreate}>
             <div className="form-row">
               <div className="form-group col-md-6">

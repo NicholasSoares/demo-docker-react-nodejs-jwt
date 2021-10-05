@@ -6,6 +6,7 @@ import { logout } from "../../services/auth";
 import ProductsTableList from "./components/ProductsTableList";
 import Pagination from "./components/Pagination";
 import ProductsTableHeader from "./components/ProductsTableHeader";
+import Swal from 'sweetalert2';
 
 class ProductList extends Component {
   constructor(props) {
@@ -38,6 +39,11 @@ class ProductList extends Component {
    */
   fetchProducts = async () =>{
     try {
+      Swal.fire({
+        allowOutsideClick : false,
+        showConfirmButton: false
+      });
+      Swal.showLoading();
       const response = await api.get("/product", {
         params: { 
           index: this.state.index,
@@ -54,15 +60,19 @@ class ProductList extends Component {
         error: null
       });
 
+      Swal.close();
     } catch (err) {
       if([403].includes(err.response?.status)){
         logout();
+        Swal.close();
         this.props.history.push("/");
       }
       else{
-        this.setState({
-          error:
-            "Erro interno do servidor, tente novamente mais tarde."
+        Swal.close();
+        Swal.fire({
+          text: 'Erro interno do servidor, tente novamente mais tarde.',
+          icon: 'error',
+          confirmButtonText: 'Ok'
         });
       }
     }
@@ -75,7 +85,7 @@ class ProductList extends Component {
     let orderingDirection = this.state.direction;
 
     if(fieldName === this.state.field){
-      orderingDirection = (this.state.direction == 'DESC')? 'ASC' : 'DESC';
+      orderingDirection = (this.state.direction === 'DESC')? 'ASC' : 'DESC';
     }
     else{
       orderingDirection = 'ASC'
@@ -100,8 +110,7 @@ class ProductList extends Component {
       <Container>
         <div className="container">
         <h4 className="mb-3">Product Listing</h4>
-          {this.state.error && <p className={'error'}>{this.state.error}</p>}
-          <table className="table table-striped table-bordered">
+          <table className="table table-striped table-bordered table-responsive w-100 d-block d-md-table">
             <thead>
               <ProductsTableHeader field={this.state.field} direction={this.state.direction} sortProducts={this.sortProducts} />
             </thead>

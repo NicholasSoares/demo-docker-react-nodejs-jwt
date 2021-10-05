@@ -14,12 +14,4 @@ export const Container = styled.div`
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
   }
-  .error {
-    color: #ff3333;
-    margin-bottom: 15px;
-    border: 1px solid #ff3333;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-  }
 `;

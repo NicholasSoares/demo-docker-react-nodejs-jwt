@@ -5,6 +5,7 @@ import * as dayjs from 'dayjs';
 import api from "../../services/api";
 import { logout } from "../../services/auth";
 import { Container } from "./styles";
+import Swal from 'sweetalert2';
 
 class ProductEdit extends Component {
   constructor(props) {
@@ -20,18 +21,9 @@ class ProductEdit extends Component {
       manufactured_at: '',
       void_at: '',
       is_perishable: false,
-      error: undefined,
-      success: undefined,
       formLoading: true
     }
   }
-
-/**
- * Set current user sucess/error message displayed on the page
- */
-  showMessageForUser = (messageInfo) => {
-    this.setState({ error: messageInfo?.error, success: messageInfo?.success }); 
-  };
 
 /**
  * Format if needed and set name field state
@@ -99,11 +91,16 @@ class ProductEdit extends Component {
      */
     fetchProduct = async () =>{
       try {
+        Swal.fire({
+          allowOutsideClick : false,
+          showConfirmButton: false
+        });
+        Swal.showLoading();
         const id = this.props.match.params.id;
         const response = await api.get(`/product/${id}`, {});
-        
+        Swal.close();
         if(!response.data.product?.id) return this.props.history.push("/products");
-
+        
         this.setState({ 
           id: response.data.product.id,
           name: response.data.product.name,
@@ -117,15 +114,19 @@ class ProductEdit extends Component {
       } catch (err) {
         if([403].includes(err.response?.status)){
           logout();
+          Swal.close();
           this.props.history.push("/");
         }
         if([404].includes(err.response?.status)){
+          Swal.close();
           this.props.history.push("/products");
         }
         else{
-          this.setState({
-            error:
-              "Erro interno do servidor, tente novamente mais tarde."
+          Swal.close();
+          Swal.fire({
+            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
         }
       }
@@ -159,23 +160,41 @@ class ProductEdit extends Component {
  handleProductUpdate = async (e) => {
     e.preventDefault();
     if (!this.validateCreateFormRequest()) {
-      this.showMessageForUser({ error: "Verifique os dados informados e tente novamente."});
+      Swal.fire({
+        text: 'Verifique os dados informados e tente novamente.',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      });
     } else {
       try {
+        Swal.fire({
+          allowOutsideClick : false,
+          showConfirmButton: false
+        });
+        Swal.showLoading();
         await api.patch(`/product/${this.state.id}`, this.getRequestBodyData());
-        this.showMessageForUser({ success: "Produto alterado com sucesso!" });
+        Swal.close();
+        Swal.fire({
+          text: 'Produto alterado com sucesso!',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        });
       } catch (err) {
         if([403].includes(err.response?.status)){
           logout();
+          Swal.close();
           this.props.history.push("/");
         }
         if([404].includes(err.response?.status)){
+          Swal.close();
           this.props.history.push("/products");
         }
         else{
-          this.showMessageForUser({
-            error:
-              "Erro interno do servidor, tente novamente mais tarde." 
+          Swal.close();
+          Swal.fire({
+            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
           });
         }
       }
@@ -187,8 +206,6 @@ class ProductEdit extends Component {
       <Container>
         <div className="container">
           <h4 className="mb-3">Product Editing</h4>
-          {this.state.error && <p className="error">{this.state.error}</p>}
-          {this.state.success && <p className="success">{this.state.success}</p>}
           <form onSubmit={this.handleProductUpdate}>
           <input type="hidden" id="id" name="id" value={this.state.id}></input>
             <div className="form-row">

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../../../services/auth";
 import api from "../../../../services/api";
+import Swal from 'sweetalert2';
 
 class RemoveProductButton extends Component {
 
@@ -10,17 +11,21 @@ class RemoveProductButton extends Component {
    */
   removeProduct = async (id) =>{
     try {
-      const response = await api.delete(`/product/${id}`, {});
+      Swal.fire({
+        allowOutsideClick : false,
+        showConfirmButton: false
+      });
+      Swal.showLoading();
+      await api.delete(`/product/${id}`, {});
       window.location.reload();
     } catch (err) {
       if([403].includes(err.response?.status)){
         logout();
+        Swal.close();
         this.props.history.push("/");
       }
-      if([404].includes(err.response?.status)){
-        window.location.reload();
-      }
       else{
+        Swal.close();
         window.location.reload();
       }
     }
