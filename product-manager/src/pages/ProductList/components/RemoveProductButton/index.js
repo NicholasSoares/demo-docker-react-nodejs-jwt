@@ -36,7 +36,7 @@ class RemoveProductButton extends Component {
 
   render() {
     return (
-      <button type="button" className="btn btn-danger ml-1 mr-1" onClick={(e) => this.removeProduct(this.props.productId)}>Remove</button>
+      <button type="button" className="btn btn-danger ml-1 mr-1 mb-1 mb-lg-0" onClick={(e) => this.removeProduct(this.props.productId)}>Remove</button>
     );
   }
 }
