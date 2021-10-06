@@ -19,7 +19,8 @@ class Pagination extends Component {
   /**
    * check if can navigate in the list and toggle navigation event of the table
    */
-  navigateBack = () => {
+  navigateBack = (e) => {
+    e.preventDefault();
     if (this.canGoBack(this.props.index)) {
       this.props.changePage(this.props.index - this.props.offset);
     }
@@ -28,7 +29,8 @@ class Pagination extends Component {
   /**
    * check if can navigate in the list and toggle navigation event of the table
    */
-  navigateForward = () => {
+  navigateForward = (e) => {
+    e.preventDefault();
     if (this.canGoForward(this.props.index, this.props.offset, this.props.productCount)) {
       this.props.changePage(this.props.index + this.props.offset);
     }
@@ -39,13 +41,13 @@ class Pagination extends Component {
       <nav aria-label="Page navigation example">
         <ul className="pagination justify-content-center">
           <li className="page-item">
-            <a className="page-link" href="#/" aria-label="Previous" onClick={(e => { this.navigateBack() })}>
+            <a className="page-link" href="#" aria-label="Previous" onClick={(e => { this.navigateBack(e) })}>
               <span aria-hidden="true">&laquo;</span>
               <span className="sr-only">Previous</span>
             </a>
           </li>
           <li className="page-item">
-            <a className="page-link" href="#/" aria-label="Next" onClick={(e => { this.navigateForward() })}>
+            <a className="page-link" href="#" aria-label="Next" onClick={(e => { this.navigateForward(e) })}>
               <span aria-hidden="true">&raquo;</span>
               <span className="sr-only">Next</span>
             </a>

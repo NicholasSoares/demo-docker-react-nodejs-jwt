@@ -59,7 +59,7 @@ module.exports.create = async (productName, productPrice, isPerishable, voidAt, 
                     name : productName,
                     price : productPrice,
                     is_perishable : isPerishable,
-                    void_at : voidAt,
+                    void_at : (isPerishable && voidAt)? voidAt : null,
                     manufactured_at : manufacturedAt,
                 },
                 {
@@ -88,7 +88,7 @@ module.exports.update = async (productId, name, price, isPerishable, voidAt, man
                     name : name,
                     price : price,
                     is_perishable : isPerishable,
-                    void_at : (voidAt)? voidAt : null,
+                    void_at : (isPerishable && voidAt)? voidAt : null,
                     manufactured_at : manufacturedAt,
                 },
                 {
