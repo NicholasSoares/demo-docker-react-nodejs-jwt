@@ -154,10 +154,15 @@ class ProductCreate extends Component {
               </div>
               <div className="form-group col-md-6">
                 <label htmlFor="price">Price</label>
-                <input type="text" className="form-control" id="price" name="price"
-                  value={Dinero({ amount: this.state.price }).toFormat('0.00')}
-                  onChange={this.handleChangeProductPrice}>
-                </input>
+                <div className="input-group mb-2">
+                  <div className="input-group-prepend">
+                    <div className="input-group-text">R$</div>
+                  </div>
+                  <input type="text" className="form-control" id="price" name="price"
+                         value={Dinero({ amount: this.state.price }).toFormat('0.00')}
+                         onChange={this.handleChangeProductPrice}>
+                  </input>
+                </div>
               </div>
             </div>
             <div className="form-row">
