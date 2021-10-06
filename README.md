@@ -38,7 +38,7 @@ PgAdmin interface:
 ```sh
 http://localhost:5050/
 ```
-PgAdmin crdentials:
+PgAdmin credentials:
 ```sh
 emal: admin@admin.com
 password: root
