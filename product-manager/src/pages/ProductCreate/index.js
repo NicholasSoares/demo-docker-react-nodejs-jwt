@@ -106,7 +106,7 @@ class ProductCreate extends Component {
     e.preventDefault();
     if (!this.validateCreateFormRequest()) {
       Swal.fire({
-        text: 'Verifique os dados informados e tente novamente.',
+        text: 'Check the input data and try again.',
         icon: 'error',
         confirmButtonText: 'Ok'
       });
@@ -116,7 +116,7 @@ class ProductCreate extends Component {
         .then((response) => {
           Swal.close();
           Swal.fire({
-            text: 'Produto criado com sucesso!',
+            text: 'Product created successfully!',
             icon: 'success',
             confirmButtonText: 'Ok'
           });
@@ -129,7 +129,7 @@ class ProductCreate extends Component {
           }
           else {
             Swal.fire({
-              text: 'Erro interno do servidor, tente novamente mais tarde.',
+              text: 'Internal server error, try again later.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });

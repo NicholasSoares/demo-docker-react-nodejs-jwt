@@ -45,7 +45,7 @@ class ProductList extends Component {
         }
         else {
           Swal.fire({
-            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            text: 'Internal server error, try again later.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });

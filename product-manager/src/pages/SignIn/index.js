@@ -28,7 +28,7 @@ class SignIn extends Component {
     const { email, password } = this.state;
     if (!email || !password) {
       Swal.fire({
-        text: 'Preencha e-mail e senha para continuar!',
+        text: 'Please check your input data',
         icon: 'error',
         confirmButtonText: 'Ok'
       });
@@ -46,7 +46,7 @@ class SignIn extends Component {
         .catch((e) => {
           Swal.close();
           Swal.fire({
-            text: 'Houve um problema com o login, verifique suas credenciais.',
+            text: 'Invalid email or password',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -61,15 +61,15 @@ class SignIn extends Component {
           <img src={Logo} alt="Login logo" />
           <input
             type="email"
-            placeholder="Endereço de e-mail"
+            placeholder="E-mail address"
             onChange={e => this.setState({ email: e.target.value })}
           />
           <input
             type="password"
-            placeholder="Senha"
+            placeholder="Password"
             onChange={e => this.setState({ password: e.target.value })}
           />
-          <button type="submit">Entrar</button>
+          <button type="submit">Sign In</button>
         </Form>
       </Container>
     );

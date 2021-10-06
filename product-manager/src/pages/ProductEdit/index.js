@@ -125,7 +125,7 @@ class ProductEdit extends Component {
         }
         else {
           Swal.fire({
-            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            text: 'Internal server error, try again later.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
@@ -162,7 +162,7 @@ class ProductEdit extends Component {
     e.preventDefault();
     if (!this.validateCreateFormRequest()) {
       Swal.fire({
-        text: 'Verifique os dados informados e tente novamente.',
+        text: 'Check the input data and try again.',
         icon: 'error',
         confirmButtonText: 'Ok'
       });
@@ -171,7 +171,7 @@ class ProductEdit extends Component {
         .then((response) => {
           Swal.close();
           Swal.fire({
-            text: 'Produto alterado com sucesso!',
+            text: 'Product updated successfully!',
             icon: 'success',
             confirmButtonText: 'Ok'
           });
@@ -187,7 +187,7 @@ class ProductEdit extends Component {
           }
           else {
             Swal.fire({
-              text: 'Erro interno do servidor, tente novamente mais tarde.',
+              text: 'Internal server error, try again later.',
               icon: 'error',
               confirmButtonText: 'Ok'
             });
