@@ -4,24 +4,9 @@ import UpdateProductButton from "../UpdateProductButton";
 import RemoveProductButton from "../RemoveProductButton";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import Dinero from "dinero.js";
 
 class ProductsTableList extends Component {
-    /**
-     * Setup BRL currency formatter
-     */
-    intlMonetary = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-        minimumFractionDigits: 2
-    });
-
-    /**
-     * Format price to BRL currency format
-     */
-    formatPrice = (price) => {
-        return this.intlMonetary.format(Number((price / 100).toFixed(2)));
-    }
-
     /**
      * Format timestamp to date
      */
@@ -35,7 +20,7 @@ class ProductsTableList extends Component {
                 <tr key={index}>
                     <th scope="row">{product.id}</th>
                     <td>{product.name}</td>
-                    <td>{this.formatPrice(product.price)}</td>
+                    <td>{Dinero({ amount: product.price ,currency: 'BRL' }).setLocale('pt-BR').toFormat()}</td>
                     <td>{product.is_perishable.toString()}</td>
                     <td>{(product.void_at) ? this.formatDate(product.void_at) : "None"}</td>
                     <td>{this.formatDate(product.manufactured_at)}</td>
