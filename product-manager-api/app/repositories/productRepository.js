@@ -32,7 +32,7 @@ module.exports.list = async (queryLimit, queryOffset, orderByField, orderByDirec
             if(!allowedFilterFields.includes(orderByField)) orderByField = 'id';
             if(!allowedOrderingDirections.includes(orderByDirection)) orderByDirection = 'ASC';
 
-            let result = await products.findAll({
+            let result = await products.findAndCountAll({
                 offset: queryLimit,
                 limit: queryOffset,
                 order: [
@@ -59,7 +59,7 @@ module.exports.create = async (productName, productPrice, isPerishable, voidAt, 
                     name : productName,
                     price : productPrice,
                     is_perishable : isPerishable,
-                    void_at : voidAt,
+                    void_at : (isPerishable && voidAt)? voidAt : null,
                     manufactured_at : manufacturedAt,
                 },
                 {
@@ -88,14 +88,15 @@ module.exports.update = async (productId, name, price, isPerishable, voidAt, man
                     name : name,
                     price : price,
                     is_perishable : isPerishable,
-                    void_at : voidAt,
+                    void_at : (isPerishable && voidAt)? voidAt : null,
                     manufactured_at : manufacturedAt,
                 },
                 {
                     where : {
                         id : productId
                     },
-                    transaction: transactionMethod
+                    transaction: transactionMethod,
+                    omitNull: false
                 },
             );
             await transactionMethod.commit();

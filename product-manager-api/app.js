@@ -17,6 +17,7 @@ const {routerConfiguration} = require('./config/routerConfiguration');
 const {resourceNotFoundHandler} = require('./app/exceptions/handlers/resourceNotFoundHandler');
 const {appRuntimeErrorHandler} = require('./app/exceptions/handlers/appRuntimeErrorHandler');
 const {staticFilesPathConfiguration} = require('./config/staticFilesPathConfiguration');
+const cors = require('cors');
 
 /**
  * Setup express configuration for the application
@@ -37,6 +38,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(compression());
 app.use(cookieParser());
+app.use(cors());
 
 /**
  * Setup helmet policies for app security
