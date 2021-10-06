@@ -9,6 +9,9 @@ import {
     GET_PRODUCT,
 } from "./types";
 
+/**
+ * Get a product from API with given id and save to redux storage
+ */
 export const getProduct = (id) => async (dispatch) => {
     try {
         const res = await getApiProduct(id);
@@ -24,6 +27,9 @@ export const getProduct = (id) => async (dispatch) => {
     }
 };
 
+/**
+ * Create an new product on API
+ */
 export const createProduct = (data) => async () => {
     try {
         const res = await createApiProduct(data);
@@ -33,6 +39,9 @@ export const createProduct = (data) => async () => {
     }
 };
 
+/**
+ * Update an product on API with given id and data
+ */
 export const updateProduct = (id, data) => async () => {
     try {
         const res = await updateApiProduct(id, data);
@@ -42,6 +51,9 @@ export const updateProduct = (id, data) => async () => {
     }
 };
 
+/**
+ * Delete an product on API with given id
+ */
 export const deleteProduct = (id) => async () => {
     try {
         const res = await deleteApiProduct(id);
