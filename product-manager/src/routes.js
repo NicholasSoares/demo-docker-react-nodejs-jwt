@@ -8,6 +8,9 @@ import NotFound from "./pages/NotFound";
 import {PrivateRoute, GuestOnlyRoute} from "./middlewares/routes";
 import SignOut from "./pages/SignOut";
 
+/**
+ * Main app router module
+ */
 const Routes = () => (
     <BrowserRouter>
         <Switch>
@@ -17,7 +20,9 @@ const Routes = () => (
     </BrowserRouter>
 );
 
-
+/**
+ * Public routes menu and internal router
+ */
 const GuessContainer = () => (
     <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -29,6 +34,9 @@ const GuessContainer = () => (
     </div>
 )
 
+/**
+ * Private routes menu and internal router
+ */
 const PrivateContainer = () => (
     <div>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -63,6 +71,5 @@ const PrivateContainer = () => (
         </Switch>
     </div>
 );
-
 
 export default Routes;
