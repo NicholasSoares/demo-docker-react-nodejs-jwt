@@ -38,8 +38,8 @@ class ProductEdit extends Component {
    */
   handleChangeProductPrice = (event) => {
     const value = event.target.value;
-    const number = value.replace(/\$|,|\./g, "");
-    this.setState({ price: parseInt(number, 10) });
+    const number = value.replace(/[^0-9]/g, '');
+    this.setState({ price: parseInt(number) });
   };
 
   /**

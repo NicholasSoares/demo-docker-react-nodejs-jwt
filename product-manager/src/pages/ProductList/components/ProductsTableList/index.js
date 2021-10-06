@@ -14,13 +14,20 @@ class ProductsTableList extends Component {
         return dayjs(date)?.format('YYYY-MM-DD');
     }
 
+    /**
+     * Format int value to BRL format
+     */
+    formatValue = (value) => {
+        return Dinero({ amount: value ,currency: 'BRL' }).setLocale('pt-BR').toFormat();
+    }
+
     render() {
         return (
             this.props.products.map((product, index) => (
                 <tr key={index}>
                     <th scope="row">{product.id}</th>
                     <td>{product.name}</td>
-                    <td>{Dinero({ amount: product.price ,currency: 'BRL' }).setLocale('pt-BR').toFormat()}</td>
+                    <td>{this.formatValue(product.price)}</td>
                     <td>{product.is_perishable.toString()}</td>
                     <td>{(product.void_at) ? this.formatDate(product.void_at) : "None"}</td>
                     <td>{this.formatDate(product.manufactured_at)}</td>
