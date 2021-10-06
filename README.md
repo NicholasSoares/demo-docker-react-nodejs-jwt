@@ -17,7 +17,7 @@ docker exec -it product-manager-api /bin/ash -c "npx sequelize db:migrate"
 docker exec -it product-manager-api /bin/ash -c "npx sequelize db:seed:all"
 ```
 ## Accessing the admin panel and API:
-By default 3 services will be exposed:
+By default 4 services will be exposed:
 
 Admin panel:
 ```sh
@@ -34,7 +34,6 @@ API interface:
 http://localhost:8000/
 ```
 
-PgAdmin:
 PgAdmin interface:
 ```sh
 http://localhost:5050/
