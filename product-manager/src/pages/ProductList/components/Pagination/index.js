@@ -5,7 +5,7 @@ class Pagination extends Component {
   /**
    * Check if can navigate back in the product list
    */
-   canGoBack = (index) => {
+  canGoBack = (index) => {
     return index > 0;
   }
 
@@ -13,15 +13,15 @@ class Pagination extends Component {
    * Check if can navigate forward in the product list
    */
   canGoForward = (index, offset, productCount) => {
-    return index+offset < productCount;
+    return index + offset < productCount;
   }
 
   /**
    * check if can navigate in the list and toggle navigation event of the table
    */
   navigateBack = () => {
-    if(this.canGoBack(this.props.index)){
-      this.props.changePage(this.props.index-this.props.offset);
+    if (this.canGoBack(this.props.index)) {
+      this.props.changePage(this.props.index - this.props.offset);
     }
   }
 
@@ -29,8 +29,8 @@ class Pagination extends Component {
    * check if can navigate in the list and toggle navigation event of the table
    */
   navigateForward = () => {
-    if(this.canGoForward(this.props.index, this.props.offset, this.props.productCount)){
-      this.props.changePage(this.props.index+this.props.offset);
+    if (this.canGoForward(this.props.index, this.props.offset, this.props.productCount)) {
+      this.props.changePage(this.props.index + this.props.offset);
     }
   }
 

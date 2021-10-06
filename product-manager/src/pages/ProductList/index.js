@@ -13,18 +13,18 @@ class ProductList extends Component {
     super(props);
     this.changePage.bind(this);
     this.sortProducts.bind(this);
-  }
 
-  /**
-   * Component States
-   */
-  state = {
-    index: 0,
-    offset: 10,
-    field: 'id',
-    direction: 'ASC',
-    products: [],
-    productCount: 0,
+    /**
+     * Component States
+     */
+    this.state = {
+      index: 0,
+      offset: 10,
+      field: 'id',
+      direction: 'ASC',
+      products: [],
+      productCount: 0,
+    }
   }
 
   /**
@@ -37,15 +37,16 @@ class ProductList extends Component {
   /**
    * Fetch products from api with given filters
    */
-  fetchProducts = async () =>{
+  fetchProducts = async () => {
     try {
       Swal.fire({
-        allowOutsideClick : false,
+        allowOutsideClick: false,
         showConfirmButton: false
       });
       Swal.showLoading();
+
       const response = await api.get("/product", {
-        params: { 
+        params: {
           index: this.state.index,
           offset: this.state.offset,
           field: this.state.field,
@@ -54,7 +55,7 @@ class ProductList extends Component {
         }
       });
 
-      this.setState({ 
+      this.setState({
         products: response.data.products,
         productCount: response.data.totalProducts,
         error: null
@@ -62,12 +63,12 @@ class ProductList extends Component {
 
       Swal.close();
     } catch (err) {
-      if([403].includes(err.response?.status)){
+      if ([403].includes(err.response?.status)) {
         logout();
         Swal.close();
         this.props.history.push("/");
       }
-      else{
+      else {
         Swal.close();
         Swal.fire({
           text: 'Erro interno do servidor, tente novamente mais tarde.',
@@ -81,17 +82,17 @@ class ProductList extends Component {
   /**
    * Sort products by its field name
    */
-  sortProducts = (fieldName) =>{
-    let orderingDirection = this.state.direction;
+  sortProducts = (fieldName) => {
+    let orderingDirection;
 
-    if(fieldName === this.state.field){
-      orderingDirection = (this.state.direction === 'DESC')? 'ASC' : 'DESC';
+    if (fieldName === this.state.field) {
+      orderingDirection = (this.state.direction === 'DESC') ? 'ASC' : 'DESC';
     }
-    else{
+    else {
       orderingDirection = 'ASC'
     }
 
-    this.setState({field: fieldName, direction: orderingDirection}, () => {
+    this.setState({ field: fieldName, direction: orderingDirection }, () => {
       this.fetchProducts();
     });
   }
@@ -100,7 +101,7 @@ class ProductList extends Component {
    * Navigate in the product list
    */
   changePage = (indexCount) => {
-    this.setState({index: indexCount}, () => {
+    this.setState({ index: indexCount }, () => {
       this.fetchProducts();
     });
   }
@@ -109,7 +110,7 @@ class ProductList extends Component {
     return (
       <Container>
         <div className="container">
-        <h4 className="mb-3">Product Listing</h4>
+          <h4 className="mb-3">Product Listing</h4>
           <table className="table table-striped table-bordered table-responsive w-100 d-block d-md-table">
             <thead>
               <ProductsTableHeader field={this.state.field} direction={this.state.direction} sortProducts={this.sortProducts} />
@@ -119,12 +120,11 @@ class ProductList extends Component {
             </tbody>
           </table>
           <p>Total Products: {this.state.productCount}</p>
-          <Pagination index={this.state.index} offset={this.state.offset} productCount={this.state.productCount} changePage={this.changePage}/>
+          <Pagination index={this.state.index} offset={this.state.offset} productCount={this.state.productCount} changePage={this.changePage} />
         </div>
       </Container>
     );
   }
-  
 }
 
 export default withRouter(ProductList);

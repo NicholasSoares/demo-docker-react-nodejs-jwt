@@ -12,6 +12,9 @@ class SignIn extends Component {
     password: "",
   };
 
+  /**
+   * Make sign in request and set session auth on app
+   */
   handleSignIn = async e => {
     e.preventDefault();
     const { email, password } = this.state;
@@ -24,13 +27,15 @@ class SignIn extends Component {
     } else {
       try {
         Swal.fire({
-          allowOutsideClick : false,
+          allowOutsideClick: false,
           showConfirmButton: false
         });
         Swal.showLoading();
+
         const response = await api.post("/user/token", { email, password });
         login(response.data.token);
         this.props.history.push("/products");
+        
       } catch (err) {
         Swal.close();
         Swal.fire({

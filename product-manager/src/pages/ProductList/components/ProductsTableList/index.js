@@ -19,7 +19,7 @@ const ProductsTableList = ({ products }) =>
       <td>{product.name}</td>
       <td>{formatPrice(product.price)}</td>
       <td>{product.is_perishable.toString()}</td>
-      <td>{(product.void_at)? product.void_at.toString() : "None" }</td>
+      <td>{(product.void_at) ? product.void_at.toString() : "None"}</td>
       <td>{product.manufactured_at.toString()}</td>
       <td>
         <UpdateProductButton productId={product.id}></UpdateProductButton>
@@ -27,6 +27,6 @@ const ProductsTableList = ({ products }) =>
       </td>
     </tr>
   )
-);
+  );
 
 export default ProductsTableList;

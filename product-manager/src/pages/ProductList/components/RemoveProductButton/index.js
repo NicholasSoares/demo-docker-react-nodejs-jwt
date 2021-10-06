@@ -9,22 +9,22 @@ class RemoveProductButton extends Component {
   /**
    * remove product from App
    */
-  removeProduct = async (id) =>{
+  removeProduct = async (id) => {
     try {
       Swal.fire({
-        allowOutsideClick : false,
+        allowOutsideClick: false,
         showConfirmButton: false
       });
       Swal.showLoading();
       await api.delete(`/product/${id}`, {});
       window.location.reload();
     } catch (err) {
-      if([403].includes(err.response?.status)){
+      if ([403].includes(err.response?.status)) {
         logout();
         Swal.close();
         this.props.history.push("/");
       }
-      else{
+      else {
         Swal.close();
         window.location.reload();
       }
@@ -37,6 +37,5 @@ class RemoveProductButton extends Component {
     );
   }
 }
-  
-  export default withRouter(RemoveProductButton);
-  
+
+export default withRouter(RemoveProductButton);
