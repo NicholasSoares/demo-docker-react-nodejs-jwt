@@ -159,7 +159,7 @@ class ProductCreate extends Component {
                     <div className="input-group-text">R$</div>
                   </div>
                   <input type="text" className="form-control" id="price" name="price"
-                         value={Dinero({ amount: this.state.price }).toFormat('0.00')}
+                         value={Dinero({ amount: this.state.price }).toFormat('0,0.00')}
                          onChange={this.handleChangeProductPrice}>
                   </input>
                 </div>
