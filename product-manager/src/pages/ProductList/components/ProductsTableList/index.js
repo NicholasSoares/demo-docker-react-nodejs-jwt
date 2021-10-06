@@ -1,15 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as dayjs from 'dayjs';
 import UpdateProductButton from "../UpdateProductButton";
 import RemoveProductButton from "../RemoveProductButton";
 import { connect } from "react-redux";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class ProductsTableList extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     /**
      * Setup BRL currency formatter
      */
@@ -36,19 +32,19 @@ class ProductsTableList extends Component {
     render() {
         return (
             this.props.products.map((product, index) => (
-                    <tr key={index}>
-                        <th scope="row">{product.id}</th>
-                        <td>{product.name}</td>
-                        <td>{this.formatPrice(product.price)}</td>
-                        <td>{product.is_perishable.toString()}</td>
-                        <td>{(product.void_at) ? this.formatDate(product.void_at) : "None"}</td>
-                        <td>{this.formatDate(product.manufactured_at)}</td>
-                        <td className="text-center">
-                            <UpdateProductButton productId={product.id}/>
-                            <RemoveProductButton productId={product.id}/>
-                        </td>
-                    </tr>
-                )
+                <tr key={index}>
+                    <th scope="row">{product.id}</th>
+                    <td>{product.name}</td>
+                    <td>{this.formatPrice(product.price)}</td>
+                    <td>{product.is_perishable.toString()}</td>
+                    <td>{(product.void_at) ? this.formatDate(product.void_at) : "None"}</td>
+                    <td>{this.formatDate(product.manufactured_at)}</td>
+                    <td className="text-center">
+                        <UpdateProductButton productId={product.id} />
+                        <RemoveProductButton productId={product.id} />
+                    </td>
+                </tr>
+            )
             )
         );
     }
@@ -63,4 +59,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, { })(ProductsTableList));
+export default withRouter(connect(mapStateToProps, {})(ProductsTableList));
