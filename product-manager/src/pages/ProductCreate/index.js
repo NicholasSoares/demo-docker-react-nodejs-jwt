@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
-import api from "../../services/api";
 import { logout } from "../../services/auth";
 import { Container } from "./styles";
 import Swal from 'sweetalert2';
+import { connect } from "react-redux";
+import { createProduct } from "../../store/actions/products";
 
 class ProductCreate extends Component {
   constructor(props) {
@@ -109,35 +110,31 @@ class ProductCreate extends Component {
         icon: 'error',
         confirmButtonText: 'Ok'
       });
-    } else {
-      try {
-        Swal.fire({
-          allowOutsideClick: false,
-          showConfirmButton: false
-        });
-        Swal.showLoading();
-        await api.post("/product", this.getRequestBodyData());
+    }
+    else {
+      this.props.createProduct(this.getRequestBodyData())
+      .then((response) => {
         Swal.close();
         Swal.fire({
           text: 'Produto criado com sucesso!',
           icon: 'success',
           confirmButtonText: 'Ok'
         });
-      } catch (err) {
+      })
+      .catch((err) => {
+        Swal.close();
         if ([403].includes(err.response?.status)) {
-          Swal.close();
           logout();
           this.props.history.push("/");
         }
         else {
-          Swal.close();
           Swal.fire({
             text: 'Erro interno do servidor, tente novamente mais tarde.',
             icon: 'error',
             confirmButtonText: 'Ok'
           });
         }
-      }
+      });
     }
   };
 
@@ -198,4 +195,13 @@ class ProductCreate extends Component {
   }
 }
 
-export default withRouter(ProductCreate);
+/**
+ * Map current state to props
+ */
+const mapStateToProps = (state) => {
+  return {
+    product: state.productReducer,
+  };
+};
+
+export default withRouter(connect(mapStateToProps, { createProduct })(ProductCreate));

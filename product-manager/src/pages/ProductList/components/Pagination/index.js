@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { sortProducts } from "../../../../store/actions/productsList";
 
 class Pagination extends Component {
 
@@ -22,7 +24,7 @@ class Pagination extends Component {
   navigateBack = (e) => {
     e.preventDefault();
     if (this.canGoBack(this.props.index)) {
-      this.props.changePage(this.props.index - this.props.offset);
+      this.changePage(this.props.index - this.props.offset);
     }
   }
 
@@ -31,9 +33,20 @@ class Pagination extends Component {
    */
   navigateForward = (e) => {
     e.preventDefault();
-    if (this.canGoForward(this.props.index, this.props.offset, this.props.productCount)) {
-      this.props.changePage(this.props.index + this.props.offset);
+    if (this.canGoForward(this.props.index, this.props.offset, this.props.totalProducts)) {
+      this.changePage(this.props.index + this.props.offset);
     }
+  }
+
+  /**
+   * Navigate in the product list
+   */
+  changePage = (indexCount) => {
+    const {offset, field, direction} = this.props;
+    this.props.sortProducts(indexCount, offset, field, direction)
+      .then(() => {
+        this.props.fetchProducts();
+      });
   }
 
   render() {
@@ -58,4 +71,17 @@ class Pagination extends Component {
   }
 }
 
-export default Pagination;
+/**
+ * Map current state to props
+ */
+const mapStateToProps = (state) => {
+  return {
+    totalProducts: state.productListReducer.totalProducts,
+    index: state.productListReducer.index,
+    offset: state.productListReducer.offset,
+    field: state.productListReducer.field,
+    direction: state.productListReducer.direction
+  };
+};
+
+export default connect(mapStateToProps, { sortProducts })(Pagination);

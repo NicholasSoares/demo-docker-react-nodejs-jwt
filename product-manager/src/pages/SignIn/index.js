@@ -1,16 +1,24 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Logo from "../../assets/product.svg";
-import api from "../../services/api";
 import { login } from "../../services/auth";
 import { Form, Container } from "./styles";
 import Swal from 'sweetalert2';
+import { connect } from "react-redux";
+import { getApiUserAuthorization } from "../../store/actions/users";
 
 class SignIn extends Component {
-  state = {
-    email: "",
-    password: "",
-  };
+  constructor(props) {
+    super(props);
+
+    /**
+     * Component States
+     */
+    this.state = {
+      email: "",
+      password: "",
+    };
+  }
 
   /**
    * Make sign in request and set session auth on app
@@ -25,25 +33,24 @@ class SignIn extends Component {
         confirmButtonText: 'Ok'
       });
     } else {
-      try {
+      this.props.getApiUserAuthorization(email, password)
+      .then((response) => {
         Swal.fire({
           allowOutsideClick: false,
           showConfirmButton: false
         });
         Swal.showLoading();
-
-        const response = await api.post("/user/token", { email, password });
-        login(response.data.token);
+        login(this.props.userToken);
         this.props.history.push("/products");
-        
-      } catch (err) {
+      })
+      .catch((e) => {
         Swal.close();
         Swal.fire({
           text: 'Houve um problema com o login, verifique suas credenciais.',
           icon: 'error',
           confirmButtonText: 'Ok'
         });
-      }
+      });
     }
   };
 
@@ -69,4 +76,13 @@ class SignIn extends Component {
   }
 }
 
-export default withRouter(SignIn);
+/**
+ * Map current state to props retrieving an valid user token for login flux
+ */
+const mapStateToProps = (state) => {
+  return {
+    userToken: state.userReducer.token,
+  };
+};
+
+export default withRouter(connect(mapStateToProps, { getApiUserAuthorization })(SignIn));

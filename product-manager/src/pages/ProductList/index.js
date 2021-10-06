@@ -1,30 +1,18 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import api from "../../services/api";
 import { Container } from "./styles";
 import { logout } from "../../services/auth";
 import ProductsTableList from "./components/ProductsTableList";
 import Pagination from "./components/Pagination";
 import ProductsTableHeader from "./components/ProductsTableHeader";
 import Swal from 'sweetalert2';
+import { connect } from "react-redux";
+import { listProducts } from "../../store/actions/productsList";
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
-    this.changePage.bind(this);
-    this.sortProducts.bind(this);
-
-    /**
-     * Component States
-     */
-    this.state = {
-      index: 0,
-      offset: 10,
-      field: 'id',
-      direction: 'ASC',
-      products: [],
-      productCount: 0,
-    }
+    this.fetchProducts.bind(this);
   }
 
   /**
@@ -38,71 +26,30 @@ class ProductList extends Component {
    * Fetch products from api with given filters
    */
   fetchProducts = async () => {
-    try {
-      Swal.fire({
-        allowOutsideClick: false,
-        showConfirmButton: false
-      });
-      Swal.showLoading();
+    Swal.fire({
+      allowOutsideClick: false,
+      showConfirmButton: false
+    });
+    Swal.showLoading();
+    const {index, offset, field, direction} = this.props;
 
-      const response = await api.get("/product", {
-        params: {
-          index: this.state.index,
-          offset: this.state.offset,
-          field: this.state.field,
-          direction: this.state.direction,
-          error: null,
-        }
-      });
-
-      this.setState({
-        products: response.data.products,
-        productCount: response.data.totalProducts,
-        error: null
-      });
-
+    this.props.listProducts(index, offset, field, direction)
+    .then((response) => {
       Swal.close();
-    } catch (err) {
+    })
+    .catch((err) => {
+      Swal.close();
       if ([403].includes(err.response?.status)) {
         logout();
-        Swal.close();
         this.props.history.push("/");
       }
       else {
-        Swal.close();
         Swal.fire({
           text: 'Erro interno do servidor, tente novamente mais tarde.',
           icon: 'error',
           confirmButtonText: 'Ok'
         });
       }
-    }
-  }
-
-  /**
-   * Sort products by its field name
-   */
-  sortProducts = (fieldName) => {
-    let orderingDirection;
-
-    if (fieldName === this.state.field) {
-      orderingDirection = (this.state.direction === 'DESC') ? 'ASC' : 'DESC';
-    }
-    else {
-      orderingDirection = 'ASC'
-    }
-
-    this.setState({ field: fieldName, direction: orderingDirection }, () => {
-      this.fetchProducts();
-    });
-  }
-
-  /**
-   * Navigate in the product list
-   */
-  changePage = (indexCount) => {
-    this.setState({ index: indexCount }, () => {
-      this.fetchProducts();
     });
   }
 
@@ -113,18 +60,32 @@ class ProductList extends Component {
           <h4 className="mb-3">Product Listing</h4>
           <table className="table table-striped table-bordered table-responsive w-100 d-block d-md-table">
             <thead>
-              <ProductsTableHeader field={this.state.field} direction={this.state.direction} sortProducts={this.sortProducts} />
+              <ProductsTableHeader fetchProducts={this.fetchProducts} />
             </thead>
             <tbody>
-              <ProductsTableList products={this.state.products} />
+              <ProductsTableList products={this.props.products} />
             </tbody>
           </table>
-          <p>Total Products: {this.state.productCount}</p>
-          <Pagination index={this.state.index} offset={this.state.offset} productCount={this.state.productCount} changePage={this.changePage} />
+          <p>Total Products: {this.props.totalProducts}</p>
+          <Pagination fetchProducts={this.fetchProducts} />
         </div>
       </Container>
     );
   }
 }
 
-export default withRouter(ProductList);
+/**
+ * Map current state to props
+ */
+const mapStateToProps = (state) => {
+  return {
+    products: state.productListReducer.products,
+    totalProducts: state.productListReducer.totalProducts,
+    index: state.productListReducer.index,
+    offset: state.productListReducer.offset,
+    field: state.productListReducer.field,
+    direction: state.productListReducer.direction
+  };
+};
+
+export default withRouter(connect(mapStateToProps, { listProducts })(ProductList));

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../../../services/auth";
-import api from "../../../../services/api";
 import Swal from 'sweetalert2';
+import { connect } from "react-redux";
+import { deleteProduct } from "../../../../store/actions/products";
 
 class RemoveProductButton extends Component {
 
@@ -10,25 +11,27 @@ class RemoveProductButton extends Component {
    * remove product from App
    */
   removeProduct = async (id) => {
-    try {
-      Swal.fire({
-        allowOutsideClick: false,
-        showConfirmButton: false
-      });
-      Swal.showLoading();
-      await api.delete(`/product/${id}`, {});
-      window.location.reload();
-    } catch (err) {
-      if ([403].includes(err.response?.status)) {
-        logout();
-        Swal.close();
-        this.props.history.push("/");
-      }
-      else {
-        Swal.close();
+    Swal.fire({
+      allowOutsideClick: false,
+      showConfirmButton: false
+    });
+    Swal.showLoading();
+
+    this.props.deleteProduct(id)
+      .then((response) => {
         window.location.reload();
-      }
-    }
+      })
+      .catch((err) => {
+        Swal.close();
+        if ([403].includes(err.response?.status)) {
+          logout();
+          this.props.history.push("/");
+        }
+        else {
+          Swal.close();
+          window.location.reload();
+        }
+      });
   }
 
   render() {
@@ -38,4 +41,13 @@ class RemoveProductButton extends Component {
   }
 }
 
-export default withRouter(RemoveProductButton);
+/**
+ * Map current state to props
+ */
+const mapStateToProps = (state) => {
+  return {
+    product: state.productReducer.product,
+  };
+};
+
+export default withRouter(connect(mapStateToProps, { deleteProduct })(RemoveProductButton));

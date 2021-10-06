@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
-import api from "../../services/api";
 import { logout } from "../../services/auth";
 import { Container } from "./styles";
 import Swal from 'sweetalert2';
+import { connect } from "react-redux";
+import { getProduct, updateProduct } from "../../store/actions/products";
 
 class ProductEdit extends Component {
   constructor(props) {
@@ -90,47 +91,47 @@ class ProductEdit extends Component {
    * Fetch products from api with given filters
    */
   fetchProduct = async () => {
-    try {
-      Swal.fire({
-        allowOutsideClick: false,
-        showConfirmButton: false
-      });
-      Swal.showLoading();
-      const id = this.props.match.params.id;
-      const response = await api.get(`/product/${id}`, {});
-      Swal.close();
-      if (!response.data.product?.id) return this.props.history.push("/products");
+    const id = this.props.match.params.id;
+    Swal.fire({
+      allowOutsideClick: false,
+      showConfirmButton: false
+    });
+    Swal.showLoading();
 
-      this.setState({
-        id: response.data.product.id,
-        name: response.data.product.name,
-        price: response.data.product.price,
-        manufactured_at: dayjs(response.data.product.manufactured_at)?.format('YYYY-MM-DD'),
-        void_at: dayjs(response.data.product.void_at)?.format('YYYY-MM-DD'),
-        is_perishable: response.data.product.is_perishable,
-        formLoading: false
-      });
+    this.props.getProduct(id)
+      .then((response) => {
+        Swal.close();
+        if (!this.props.product?.id) return this.props.history.push("/products");
 
-    } catch (err) {
-      if ([403].includes(err.response?.status)) {
-        logout();
-        Swal.close();
-        this.props.history.push("/");
-      }
-      if ([404].includes(err.response?.status)) {
-        Swal.close();
-        this.props.history.push("/products");
-      }
-      else {
-        Swal.close();
-        Swal.fire({
-          text: 'Erro interno do servidor, tente novamente mais tarde.',
-          icon: 'error',
-          confirmButtonText: 'Ok'
+        this.setState({
+          id: this.props.product.id,
+          name: this.props.product.name,
+          price: this.props.product.price,
+          manufactured_at: dayjs(this.props.product.manufactured_at)?.format('YYYY-MM-DD'),
+          void_at: dayjs(this.props.product.void_at)?.format('YYYY-MM-DD'),
+          is_perishable: this.props.product.is_perishable,
+          formLoading: false
         });
-      }
-    }
-  }
+
+      })
+      .catch((err) => {
+        Swal.close();
+        if ([403].includes(err.response?.status)) {
+          logout();
+          this.props.history.push("/");
+        }
+        else if ([404].includes(err.response?.status)) {
+          this.props.history.push("/products");
+        }
+        else {
+          Swal.fire({
+            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        }
+      });
+  };
 
   /**
    * Get request body data for product creation with given form data
@@ -166,38 +167,32 @@ class ProductEdit extends Component {
         confirmButtonText: 'Ok'
       });
     } else {
-      try {
-        Swal.fire({
-          allowOutsideClick: false,
-          showConfirmButton: false
-        });
-        Swal.showLoading();
-        await api.patch(`/product/${this.state.id}`, this.getRequestBodyData());
-        Swal.close();
-        Swal.fire({
-          text: 'Produto alterado com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'Ok'
-        });
-      } catch (err) {
-        if ([403].includes(err.response?.status)) {
-          logout();
-          Swal.close();
-          this.props.history.push("/");
-        }
-        if ([404].includes(err.response?.status)) {
-          Swal.close();
-          this.props.history.push("/products");
-        }
-        else {
+      this.props.updateProduct(this.state.id, this.getRequestBodyData())
+        .then((response) => {
           Swal.close();
           Swal.fire({
-            text: 'Erro interno do servidor, tente novamente mais tarde.',
-            icon: 'error',
+            text: 'Produto alterado com sucesso!',
+            icon: 'success',
             confirmButtonText: 'Ok'
           });
-        }
-      }
+        })
+        .catch((err) => {
+          Swal.close();
+          if ([403].includes(err.response?.status)) {
+            logout();
+            this.props.history.push("/");
+          }
+          else if ([404].includes(err.response?.status)) {
+            this.props.history.push("/products");
+          }
+          else {
+            Swal.fire({
+              text: 'Erro interno do servidor, tente novamente mais tarde.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        });
     }
   };
 
@@ -207,7 +202,7 @@ class ProductEdit extends Component {
         <div className="container">
           <h4 className="mb-3">Product Editing</h4>
           <form onSubmit={this.handleProductUpdate}>
-            <input type="hidden" id="id" name="id" value={this.state.id}></input>
+            <input type="hidden" id="id" name="id" value={this.state.id}/>
             <div className="form-row">
               <div className="form-group col-md-6">
                 <label htmlFor="name">Name</label>
@@ -264,4 +259,13 @@ class ProductEdit extends Component {
   }
 }
 
-export default withRouter(ProductEdit);
+/**
+ * Map current state to props
+ */
+const mapStateToProps = (state) => {
+  return {
+    product: state.productReducer.product,
+  };
+};
+
+export default withRouter(connect(mapStateToProps, { getProduct, updateProduct })(ProductEdit));
