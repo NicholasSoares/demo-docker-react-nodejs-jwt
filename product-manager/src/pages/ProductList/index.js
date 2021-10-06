@@ -63,7 +63,7 @@ class ProductList extends Component {
               <ProductsTableHeader fetchProducts={this.fetchProducts} />
             </thead>
             <tbody>
-              <ProductsTableList products={this.props.products} />
+              <ProductsTableList />
             </tbody>
           </table>
           <p>Total Products: {this.props.totalProducts}</p>
