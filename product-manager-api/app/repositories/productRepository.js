@@ -88,14 +88,15 @@ module.exports.update = async (productId, name, price, isPerishable, voidAt, man
                     name : name,
                     price : price,
                     is_perishable : isPerishable,
-                    void_at : voidAt,
+                    void_at : (voidAt)? voidAt : null,
                     manufactured_at : manufacturedAt,
                 },
                 {
                     where : {
                         id : productId
                     },
-                    transaction: transactionMethod
+                    transaction: transactionMethod,
+                    omitNull: false
                 },
             );
             await transactionMethod.commit();

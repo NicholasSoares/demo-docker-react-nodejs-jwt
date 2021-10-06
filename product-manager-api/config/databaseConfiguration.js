@@ -16,7 +16,7 @@ const sequelize = new Sequelize({
         'charset': 'utf8mb4'
     },
     'logging': false,
-    'omitNull': true
+    'omitNull': false
 });
 
 module.exports = sequelize;

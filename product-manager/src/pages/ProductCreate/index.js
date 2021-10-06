@@ -70,7 +70,7 @@ class ProductCreate extends Component {
     const { name, price, manufactured_at, void_at, is_perishable } = this.state;
     if (!name?.length) return false;
     if (price <= 0) return false;
-    if (is_perishable && !void_at) return false;
+    if (is_perishable && !dayjs(void_at).isValid()) return false;
     if (is_perishable) {
       if (dayjs(void_at).diff(dayjs(manufactured_at), 'day', true) <= 0) return false;
     }
