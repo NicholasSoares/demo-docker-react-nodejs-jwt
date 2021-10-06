@@ -33,7 +33,7 @@ class ProductsTableList extends Component {
                     <td>{this.formatDate(product.manufactured_at)}</td>
                     <td className="text-center">
                         <UpdateProductButton productId={product.id} />
-                        <RemoveProductButton productId={product.id} />
+                        <RemoveProductButton fetchProducts={this.props.fetchProducts} productId={product.id} />
                     </td>
                 </tr>
             )
