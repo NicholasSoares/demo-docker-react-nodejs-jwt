@@ -1,5 +1,5 @@
 import { Route, Redirect } from "react-router-dom";
-import { isAuthenticated } from "../services/auth";
+import { isAuthenticated } from "../services/authService";
 
 /**
  * Check if user can access routes that require login

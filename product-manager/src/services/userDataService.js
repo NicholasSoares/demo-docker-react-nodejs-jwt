@@ -1,8 +1,8 @@
-import api from "./api";
+import apiClientService from "./apiClientService";
 
 /**
  * Query API with given email and password and return it's access credentials if valid
  */
 export const getUserAuth = (email, password) => {
-    return api.post("/user/token", { email, password });
+    return apiClientService.post("/user/token", { email, password });
 }

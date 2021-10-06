@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
-import { logout } from "../../services/auth";
+import { logout } from "../../services/authService";
 import { Container } from "./styles";
 import Swal from 'sweetalert2';
 import { connect } from "react-redux";

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { logout } from "../../services/auth";
+import { logout } from "../../services/authService";
 import Swal from 'sweetalert2';
 
 class SignOut extends Component {

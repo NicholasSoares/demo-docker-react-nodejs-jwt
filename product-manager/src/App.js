@@ -1,5 +1,5 @@
 import React from "react";
-import Routes from "./routes";
+import Routes from "./pages/routes";
 import "./styles/global";
 
 const App = () => <Routes />;

@@ -1,12 +1,12 @@
 import React from "react";
 import {BrowserRouter, Route, Switch, NavLink} from "react-router-dom";
-import SignIn from "./pages/SignIn";
-import ProductList from "./pages/ProductList";
-import ProductEdit from "./pages/ProductEdit";
-import ProductCreate from "./pages/ProductCreate";
-import NotFound from "./pages/NotFound";
-import {PrivateRoute, GuestOnlyRoute} from "./middlewares/routes";
-import SignOut from "./pages/SignOut";
+import SignIn from "./SignIn";
+import ProductList from "./ProductList";
+import ProductEdit from "./ProductEdit";
+import ProductCreate from "./ProductCreate";
+import NotFound from "./NotFound";
+import {PrivateRoute, GuestOnlyRoute} from "../middlewares/routes";
+import SignOut from "./SignOut";
 
 /**
  * Main app router module

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Container } from "./styles";
-import { logout } from "../../services/auth";
+import { logout } from "../../services/authService";
 import ProductsTableList from "./components/ProductsTableList";
 import Pagination from "./components/Pagination";
 import ProductsTableHeader from "./components/ProductsTableHeader";

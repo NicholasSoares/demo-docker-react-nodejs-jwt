@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Logo from "../../assets/product.svg";
-import { login } from "../../services/auth";
+import { login } from "../../services/authService";
 import { Form, Container } from "./styles";
 import Swal from 'sweetalert2';
 import { connect } from "react-redux";
