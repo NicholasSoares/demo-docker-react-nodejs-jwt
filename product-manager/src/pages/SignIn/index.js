@@ -34,23 +34,23 @@ class SignIn extends Component {
       });
     } else {
       this.props.getApiUserAuthorization(email, password)
-      .then((response) => {
-        Swal.fire({
-          allowOutsideClick: false,
-          showConfirmButton: false
+        .then((response) => {
+          Swal.fire({
+            allowOutsideClick: false,
+            showConfirmButton: false
+          });
+          Swal.showLoading();
+          login(this.props.userToken);
+          this.props.history.push("/products");
+        })
+        .catch((e) => {
+          Swal.close();
+          Swal.fire({
+            text: 'Houve um problema com o login, verifique suas credenciais.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
         });
-        Swal.showLoading();
-        login(this.props.userToken);
-        this.props.history.push("/products");
-      })
-      .catch((e) => {
-        Swal.close();
-        Swal.fire({
-          text: 'Houve um problema com o login, verifique suas credenciais.',
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-      });
     }
   };
 

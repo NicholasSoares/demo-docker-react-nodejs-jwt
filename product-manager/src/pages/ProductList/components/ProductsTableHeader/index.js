@@ -3,49 +3,49 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { sortProducts } from "../../../../store/actions/productsList";
 library.add(fab, fas);
 
 class ProductsTableHeader extends Component {
 
-    /**
-    * Check if field is active in sorting and highligh it
-    */
-    setActive = (name) => {
-        return (this.props.field === name) ? 'text-primary' : '';
+  /**
+  * Check if field is active in sorting and highligh it
+  */
+  setActive = (name) => {
+    return (this.props.field === name) ? 'text-primary' : '';
+  }
+
+  /**
+  * Set ordering icon for visual guidance
+  */
+  setIcon = (name) => {
+    if (this.props.field === name) {
+      const direction = (this.props.direction === 'ASC') ? 'up' : 'down';
+      return <FontAwesomeIcon icon={["fas", `sort-alpha-${direction}`]} />
+    }
+  }
+
+  /**
+   * Sort products by its field name
+   */
+  sortProducts = (fieldName) => {
+    let orderingDirection;
+    const { index, offset, field, direction } = this.props;
+
+    if (fieldName === field) {
+      orderingDirection = (direction === 'DESC') ? 'ASC' : 'DESC';
+    }
+    else {
+      orderingDirection = 'ASC'
     }
 
-    /**
-    * Set ordering icon for visual guidance
-    */
-    setIcon = (name) => {
-        if (this.props.field === name) {
-          const direction = (this.props.direction === 'ASC') ? 'up' : 'down';
-          return <FontAwesomeIcon icon={["fas", `sort-alpha-${direction}`]} />
-        }
-    }
-
-    /**
-     * Sort products by its field name
-     */
-    sortProducts = (fieldName) => {
-        let orderingDirection;
-        const {index, offset, field, direction} = this.props;
-
-        if (fieldName === field) {
-            orderingDirection = (direction === 'DESC') ? 'ASC' : 'DESC';
-        }
-        else {
-            orderingDirection = 'ASC'
-        }
-
-        this.props.sortProducts( index, offset, fieldName, orderingDirection )
-        .then(() => {
-            this.props.fetchProducts();
-        });
-    }
+    this.props.sortProducts(index, offset, fieldName, orderingDirection)
+      .then(() => {
+        this.props.fetchProducts();
+      });
+  }
 
   render() {
     return (
@@ -90,12 +90,12 @@ class ProductsTableHeader extends Component {
  * Map current state to props
  */
 const mapStateToProps = (state) => {
-    return {
-        totalProducts: state.productListReducer.totalProducts,
-        index: state.productListReducer.index,
-        offset: state.productListReducer.offset,
-        field: state.productListReducer.field,
-        direction: state.productListReducer.direction
-    };
+  return {
+    totalProducts: state.productListReducer.totalProducts,
+    index: state.productListReducer.index,
+    offset: state.productListReducer.offset,
+    field: state.productListReducer.field,
+    direction: state.productListReducer.direction
+  };
 };
 export default withRouter(connect(mapStateToProps, { sortProducts })(ProductsTableHeader));

@@ -31,26 +31,26 @@ class ProductList extends Component {
       showConfirmButton: false
     });
     Swal.showLoading();
-    const {index, offset, field, direction} = this.props;
+    const { index, offset, field, direction } = this.props;
 
     this.props.listProducts(index, offset, field, direction)
-    .then((response) => {
-      Swal.close();
-    })
-    .catch((err) => {
-      Swal.close();
-      if ([403].includes(err.response?.status)) {
-        logout();
-        this.props.history.push("/");
-      }
-      else {
-        Swal.fire({
-          text: 'Erro interno do servidor, tente novamente mais tarde.',
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-      }
-    });
+      .then((response) => {
+        Swal.close();
+      })
+      .catch((err) => {
+        Swal.close();
+        if ([403].includes(err.response?.status)) {
+          logout();
+          this.props.history.push("/");
+        }
+        else {
+          Swal.fire({
+            text: 'Erro interno do servidor, tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+        }
+      });
   }
 
   render() {

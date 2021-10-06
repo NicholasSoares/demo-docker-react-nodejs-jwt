@@ -202,7 +202,7 @@ class ProductEdit extends Component {
         <div className="container">
           <h4 className="mb-3">Product Editing</h4>
           <form onSubmit={this.handleProductUpdate}>
-            <input type="hidden" id="id" name="id" value={this.state.id}/>
+            <input type="hidden" id="id" name="id" value={this.state.id} />
             <div className="form-row">
               <div className="form-group col-md-6">
                 <label htmlFor="name">Name</label>

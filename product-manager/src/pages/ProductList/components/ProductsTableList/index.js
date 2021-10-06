@@ -22,11 +22,11 @@ const ProductsTableList = ({ products }) =>
       <td>{(product.void_at) ? product.void_at.toString() : "None"}</td>
       <td>{product.manufactured_at.toString()}</td>
       <td>
-        <UpdateProductButton productId={product.id}/>
-        <RemoveProductButton productId={product.id}/>
+        <UpdateProductButton productId={product.id} />
+        <RemoveProductButton productId={product.id} />
       </td>
     </tr>
   )
-);
+  );
 
 export default ProductsTableList;

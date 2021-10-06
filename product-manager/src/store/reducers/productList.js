@@ -3,6 +3,9 @@ import {
     SORT_PRODUCTS
 } from "../actions/types";
 
+/**
+ * Set template state to avoid undefined keys on cold start
+ */
 const initialState = {
     productCount: 0,
     products: [],
@@ -12,6 +15,9 @@ const initialState = {
     direction: 'ASC'
 };
 
+/**
+ * Product listing reducers for product list page
+ */
 function productListReducer(productList = initialState, action) {
     const { type, payload } = action;
 

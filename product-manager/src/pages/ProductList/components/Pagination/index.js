@@ -42,7 +42,7 @@ class Pagination extends Component {
    * Navigate in the product list
    */
   changePage = (indexCount) => {
-    const {offset, field, direction} = this.props;
+    const { offset, field, direction } = this.props;
     this.props.sortProducts(indexCount, offset, field, direction)
       .then(() => {
         this.props.fetchProducts();

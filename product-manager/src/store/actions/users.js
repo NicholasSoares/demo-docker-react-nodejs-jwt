@@ -4,6 +4,9 @@ import {
 
 import { getUserAuth } from "../../services/userDataService";
 
+/**
+ * Try to authorize user on API and save return to redux storage
+ */
 export const getApiUserAuthorization = (email, password) => async (dispatch) => {
     try {
         const res = await getUserAuth(email, password);

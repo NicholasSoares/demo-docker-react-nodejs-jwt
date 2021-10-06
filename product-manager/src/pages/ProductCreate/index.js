@@ -113,28 +113,28 @@ class ProductCreate extends Component {
     }
     else {
       this.props.createProduct(this.getRequestBodyData())
-      .then((response) => {
-        Swal.close();
-        Swal.fire({
-          text: 'Produto criado com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'Ok'
-        });
-      })
-      .catch((err) => {
-        Swal.close();
-        if ([403].includes(err.response?.status)) {
-          logout();
-          this.props.history.push("/");
-        }
-        else {
+        .then((response) => {
+          Swal.close();
           Swal.fire({
-            text: 'Erro interno do servidor, tente novamente mais tarde.',
-            icon: 'error',
+            text: 'Produto criado com sucesso!',
+            icon: 'success',
             confirmButtonText: 'Ok'
           });
-        }
-      });
+        })
+        .catch((err) => {
+          Swal.close();
+          if ([403].includes(err.response?.status)) {
+            logout();
+            this.props.history.push("/");
+          }
+          else {
+            Swal.fire({
+              text: 'Erro interno do servidor, tente novamente mais tarde.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        });
     }
   };
 

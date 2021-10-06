@@ -2,16 +2,29 @@ import {
     GET_USER_AUTH
 } from "../actions/types";
 
-const initialState = [];
+/**
+ * Set template state to avoid undefined keys on cold start
+ */
+const initialState = {
+    auth: false,
+    token: null
+};
 
-function userReducer(user = initialState, action) {
+/**
+ * User reducers for sign in page
+ */
+function userReducer(authUser = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
         case GET_USER_AUTH:
-            return payload;
+            return {
+                ...authUser,
+                auth: payload.auth,
+                token: payload.token
+            };
         default:
-            return user;
+            return authUser;
     }
 }
 

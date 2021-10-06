@@ -7,6 +7,9 @@ import {
     SORT_PRODUCTS,
 } from "./types";
 
+/**
+ * Query products from api with given query sorting params and save to redux storage
+ */
 export const listProducts = (indexList, offsetList, fieldName, directionName) => async (dispatch) => {
     try {
         const res = await listApiProducts(indexList, offsetList, fieldName, directionName);
@@ -22,11 +25,14 @@ export const listProducts = (indexList, offsetList, fieldName, directionName) =>
     }
 };
 
+/**
+ * Set query sorting params on redux storage
+ */
 export const sortProducts = (indexList, offsetList, fieldName, directionName) => async (dispatch) => {
     try {
         dispatch({
             type: SORT_PRODUCTS,
-            payload: {indexList, offsetList, fieldName, directionName},
+            payload: { indexList, offsetList, fieldName, directionName },
         });
         return Promise.resolve();
     } catch (err) {

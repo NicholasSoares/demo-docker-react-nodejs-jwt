@@ -11,8 +11,8 @@ import SignOut from "./pages/SignOut";
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={GuessContainer}/>
-      <Route component={PrivateContainer}/>
+      <Route exact path="/" component={GuessContainer} />
+      <Route component={PrivateContainer} />
     </Switch>
   </BrowserRouter>
 );
@@ -27,12 +27,12 @@ const GuessContainer = () => (
       <GuestOnlyRoute exact path="/" component={SignIn} />
     </Switch>
   </div>
- )
+)
 
- const PrivateContainer = () => (
+const PrivateContainer = () => (
   <div>
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
       <a className="navbar-brand" href="/">Product Manager System</a>
@@ -57,7 +57,7 @@ const GuessContainer = () => (
       <PrivateRoute path="*" component={NotFound} />
     </Switch>
   </div>
- );
+);
 
 
 export default Routes;
