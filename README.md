@@ -6,12 +6,12 @@
 - docker-compose
 - Ubuntu 18 or above (Debian based distros)
 
-## Instalation:
-Build the app containers with the command:
+## Installation:
+Build the app's container images with the command:
 ```sh
 docker-compose up --build
 ```
-When the app finhished loading for the first time there will be no data yet, and to populate the database run the following commands:
+When the app finishes the build process and is running for the first time there will be no data yet, and to populate the database run the following commands:
 ```sh
 docker exec -it product-manager-api /bin/ash -c "npx sequelize db:migrate"
 docker exec -it product-manager-api /bin/ash -c "npx sequelize db:seed:all"
