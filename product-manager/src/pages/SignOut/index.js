@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { logout } from "../../services/authService";
-import Swal from 'sweetalert2';
+import { showFullScreenLoader, closeFullScreenLoader } from "../../services/swalService";
 
 class SignOut extends Component {
 
@@ -10,13 +10,9 @@ class SignOut extends Component {
    */
   handleSignOut(e) {
     e.preventDefault();
-    Swal.fire({
-      allowOutsideClick: false,
-      showConfirmButton: false
-    });
-    Swal.showLoading();
+    showFullScreenLoader();
     logout();
-    Swal.close();
+    closeFullScreenLoader();
     this.props.history.push("/");
   }
 
