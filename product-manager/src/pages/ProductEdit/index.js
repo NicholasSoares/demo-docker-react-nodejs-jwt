@@ -4,7 +4,7 @@ import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
 import { logout } from "../../services/authService";
 import { Container } from "./styles";
-import Swal from 'sweetalert2';
+import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage, showSuccessMessage } from "../../services/swalService";
 import { connect } from "react-redux";
 import { getProduct, updateProduct } from "../../store/actions/products";
 
@@ -91,46 +91,31 @@ class ProductEdit extends Component {
    * Fetch products from api with given filters
    */
   fetchProduct = async () => {
-    const id = this.props.match.params.id;
-    Swal.fire({
-      allowOutsideClick: false,
-      showConfirmButton: false
-    });
-    Swal.showLoading();
+    try {
+      showFullScreenLoader();
+      const { id } = this.props.match.params;
+      const product = await this.props.getProduct(id);
+      closeFullScreenLoader();
+      if (!this.props.product?.id) return this.props.history.push("/products");
 
-    this.props.getProduct(id)
-      .then((response) => {
-        Swal.close();
-        if (!this.props.product?.id) return this.props.history.push("/products");
-
-        this.setState({
-          id: this.props.product.id,
-          name: this.props.product.name,
-          price: this.props.product.price,
-          manufactured_at: dayjs(this.props.product.manufactured_at)?.format('YYYY-MM-DD'),
-          void_at: dayjs(this.props.product.void_at)?.format('YYYY-MM-DD'),
-          is_perishable: this.props.product.is_perishable,
-          formLoading: false
-        });
-
-      })
-      .catch((err) => {
-        Swal.close();
-        if ([403].includes(err.response?.status)) {
-          logout();
-          this.props.history.push("/");
-        }
-        else if ([404].includes(err.response?.status)) {
-          this.props.history.push("/products");
-        }
-        else {
-          Swal.fire({
-            text: 'Internal server error, try again later.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        }
+      this.setState({
+        id: this.props.product.id,
+        name: this.props.product.name,
+        price: this.props.product.price,
+        manufactured_at: dayjs(this.props.product.manufactured_at)?.format('YYYY-MM-DD'),
+        void_at: dayjs(this.props.product.void_at)?.format('YYYY-MM-DD'),
+        is_perishable: this.props.product.is_perishable,
+        formLoading: false
       });
+    }
+    catch (err) {
+      closeFullScreenLoader();
+      if ([403].includes(err.response?.status)) {
+        logout();
+        this.props.history.push("/");
+      }
+      this.props.history.push("/products");
+    }
   };
 
   /**
@@ -159,40 +144,24 @@ class ProductEdit extends Component {
    * Check fields and send request for product details update
    */
   handleProductUpdate = async (e) => {
-    e.preventDefault();
-    if (!this.validateCreateFormRequest()) {
-      Swal.fire({
-        text: 'Check the input data and try again.',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      });
-    } else {
-      this.props.updateProduct(this.state.id, this.getRequestBodyData())
-        .then((response) => {
-          Swal.close();
-          Swal.fire({
-            text: 'Product updated successfully!',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          });
-        })
-        .catch((err) => {
-          Swal.close();
-          if ([403].includes(err.response?.status)) {
-            logout();
-            this.props.history.push("/");
-          }
-          else if ([404].includes(err.response?.status)) {
-            this.props.history.push("/products");
-          }
-          else {
-            Swal.fire({
-              text: 'Internal server error, try again later.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          }
-        });
+    try {
+      e.preventDefault();
+      showFullScreenLoader();
+      if (!this.validateCreateFormRequest()) {
+        showErrorMessage('Check the input data and try again.')
+      }
+      else {
+        await this.props.updateProduct(this.state.id, this.getRequestBodyData());
+        showSuccessMessage('Product updated successfully!');
+      }
+    }
+    catch (err) {
+      closeFullScreenLoader();
+      if ([403].includes(err.response?.status)) {
+        logout();
+        this.props.history.push("/");
+      }
+      this.props.history.push("/products");
     }
   };
 
@@ -219,9 +188,9 @@ class ProductEdit extends Component {
                     <div className="input-group-text">R$</div>
                   </div>
                   <input type="text" className="form-control" id="price" name="price"
-                         value={Dinero({ amount: this.state.price ,currency: 'BRL' }).setLocale('pt-BR').toFormat().replace('R$','')}
-                         onChange={this.handleChangeProductPrice}
-                         disabled={this.state.formLoading}>
+                    value={Dinero({ amount: this.state.price, currency: 'BRL' }).setLocale('pt-BR').toFormat().replace('R$', '')}
+                    onChange={this.handleChangeProductPrice}
+                    disabled={this.state.formLoading}>
                   </input>
                 </div>
               </div>

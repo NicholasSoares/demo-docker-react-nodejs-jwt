@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import Logo from "../../assets/product.svg";
 import { login } from "../../services/authService";
 import { Form, Container } from "./styles";
-import Swal from 'sweetalert2';
+import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage } from "../../services/swalService";
 import { connect } from "react-redux";
 import { getApiUserAuthorization } from "../../store/actions/users";
 
@@ -24,33 +24,22 @@ class SignIn extends Component {
    * Make sign in request and set session auth on app
    */
   handleSignIn = async e => {
-    e.preventDefault();
-    const { email, password } = this.state;
-    if (!email || !password) {
-      Swal.fire({
-        text: 'Please check your input data',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      });
-    } else {
-      this.props.getApiUserAuthorization(email, password)
-        .then((response) => {
-          Swal.fire({
-            allowOutsideClick: false,
-            showConfirmButton: false
-          });
-          Swal.showLoading();
-          login(this.props.userToken);
-          this.props.history.push("/products");
-        })
-        .catch((e) => {
-          Swal.close();
-          Swal.fire({
-            text: 'Invalid email or password',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        });
+    try {
+      e.preventDefault();
+      showFullScreenLoader();
+      const { email, password } = this.state;
+      if (!email || !password) {
+        showErrorMessage('Please check your input data');
+      }
+      else {
+        await this.props.getApiUserAuthorization(email, password);
+        login(this.props.userToken);
+        closeFullScreenLoader();
+        this.props.history.push("/products");
+      }
+    }
+    catch (err) {
+      showErrorMessage('Invalid email or password');
     }
   };
 

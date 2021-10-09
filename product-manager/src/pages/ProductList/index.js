@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Container } from "./styles";
 import { logout } from "../../services/authService";
+import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage } from "../../services/swalService";
 import ProductsTableList from "./components/ProductsTableList";
 import Pagination from "./components/Pagination";
 import ProductsTableHeader from "./components/ProductsTableHeader";
-import Swal from 'sweetalert2';
 import { connect } from "react-redux";
 import { listProducts } from "../../store/actions/productsList";
 
@@ -26,31 +26,22 @@ class ProductList extends Component {
    * Fetch products from api with given filters
    */
   fetchProducts = async () => {
-    Swal.fire({
-      allowOutsideClick: false,
-      showConfirmButton: false
-    });
-    Swal.showLoading();
-    const { index, offset, field, direction } = this.props;
-
-    this.props.listProducts(index, offset, field, direction)
-      .then((response) => {
-        Swal.close();
-      })
-      .catch((err) => {
-        Swal.close();
-        if ([403].includes(err.response?.status)) {
-          logout();
-          this.props.history.push("/");
-        }
-        else {
-          Swal.fire({
-            text: 'Internal server error, try again later.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        }
-      });
+    try {
+      const { index, offset, field, direction } = this.props;
+      showFullScreenLoader();
+      await this.props.listProducts(index, offset, field, direction);
+      closeFullScreenLoader();
+    }
+    catch (err) {
+      closeFullScreenLoader();
+      if ([403].includes(err.response?.status)) {
+        logout();
+        this.props.history.push("/");
+      }
+      else {
+        showErrorMessage('Internal server error, try again later.');
+      }
+    }
   }
 
   render() {

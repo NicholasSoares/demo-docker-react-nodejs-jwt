@@ -4,9 +4,9 @@ import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
 import { logout } from "../../services/authService";
 import { Container } from "./styles";
-import Swal from 'sweetalert2';
 import { connect } from "react-redux";
 import { createProduct } from "../../store/actions/products";
+import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage, showSuccessMessage } from "../../services/swalService";
 
 class ProductCreate extends Component {
   constructor(props) {
@@ -103,38 +103,24 @@ class ProductCreate extends Component {
    * Check fields and send request for product creation
    */
   handleProductCreate = async (e) => {
-    e.preventDefault();
-    if (!this.validateCreateFormRequest()) {
-      Swal.fire({
-        text: 'Check the input data and try again.',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      });
+    try {
+      e.preventDefault();
+      showFullScreenLoader();
+      if (!this.validateCreateFormRequest()) {
+        showErrorMessage('Check the input data and try again.')
+      }
+      else {
+        await this.props.createProduct(this.getRequestBodyData());
+        showSuccessMessage('Product created successfully!');
+      }
     }
-    else {
-      this.props.createProduct(this.getRequestBodyData())
-        .then((response) => {
-          Swal.close();
-          Swal.fire({
-            text: 'Product created successfully!',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          });
-        })
-        .catch((err) => {
-          Swal.close();
-          if ([403].includes(err.response?.status)) {
-            logout();
-            this.props.history.push("/");
-          }
-          else {
-            Swal.fire({
-              text: 'Internal server error, try again later.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            });
-          }
-        });
+    catch (err) {
+      closeFullScreenLoader();
+      if ([403].includes(err.response?.status)) {
+        logout();
+        this.props.history.push("/");
+      }
+      showErrorMessage('Internal server error, try again later.');
     }
   };
 
@@ -159,8 +145,8 @@ class ProductCreate extends Component {
                     <div className="input-group-text">R$</div>
                   </div>
                   <input type="text" className="form-control" id="price" name="price"
-                         value={Dinero({ amount: this.state.price ,currency: 'BRL' }).setLocale('pt-BR').toFormat().replace('R$','')}
-                         onChange={this.handleChangeProductPrice}>
+                    value={Dinero({ amount: this.state.price, currency: 'BRL' }).setLocale('pt-BR').toFormat().replace('R$', '')}
+                    onChange={this.handleChangeProductPrice}>
                   </input>
                 </div>
               </div>
