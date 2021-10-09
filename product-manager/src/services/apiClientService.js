@@ -24,7 +24,7 @@ apiClientService.interceptors.request.use(async config => {
  * and execute and page reload to log out the user
  * except if in the sign in page
  */
-apiClientService.interceptors.response.use( (response) => {
+apiClientService.interceptors.response.use((response) => {
   return response;
 }, function (error) {
   if ([403].includes(error.response?.status) && error.response?.config.url !== '/user/token') {

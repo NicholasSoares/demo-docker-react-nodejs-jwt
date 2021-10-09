@@ -32,7 +32,6 @@ class ProductList extends Component {
       closeFullScreenLoader();
     }
     catch (err) {
-      closeFullScreenLoader();
       showErrorMessage('Internal server error, try again later.');
     }
   }

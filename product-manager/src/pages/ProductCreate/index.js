@@ -114,7 +114,6 @@ class ProductCreate extends Component {
       }
     }
     catch (err) {
-      closeFullScreenLoader();
       showErrorMessage('Internal server error, try again later.');
     }
   };
