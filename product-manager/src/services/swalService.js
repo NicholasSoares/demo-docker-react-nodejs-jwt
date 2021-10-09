@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 
 /**
- * 
+ * Show full screen loader
  */
 export const showFullScreenLoader = () => {
   Swal.fire({
@@ -12,14 +12,14 @@ export const showFullScreenLoader = () => {
 };
 
 /**
- * 
+ * Close an active full screen loader
  */
 export const closeFullScreenLoader = () => {
   Swal.close();
 };
 
 /**
- * 
+ * Close any active swal alerts or loaders and show a error message
  */
 export const showErrorMessage = (message) => {
   Swal.close();
@@ -31,7 +31,7 @@ export const showErrorMessage = (message) => {
 };
 
 /**
- * 
+ * Close any active swal alerts or loaders and show a success message
  */
 export const showSuccessMessage = (message) => {
   Swal.close();
