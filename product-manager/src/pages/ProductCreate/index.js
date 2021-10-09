@@ -5,7 +5,7 @@ import * as dayjs from 'dayjs';
 import { Container } from "./styles";
 import { connect } from "react-redux";
 import { createProduct } from "../../store/actions/products";
-import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage, showSuccessMessage } from "../../services/swalService";
+import { showFullScreenLoader, showErrorMessage, showSuccessMessage } from "../../services/swalService";
 
 class ProductCreate extends Component {
   constructor(props) {
