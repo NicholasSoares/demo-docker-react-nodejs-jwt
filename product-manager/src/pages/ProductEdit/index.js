@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
-import { logout } from "../../services/authService";
 import { Container } from "./styles";
 import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage, showSuccessMessage } from "../../services/swalService";
 import { connect } from "react-redux";
@@ -94,7 +93,7 @@ class ProductEdit extends Component {
     try {
       showFullScreenLoader();
       const { id } = this.props.match.params;
-      const product = await this.props.getProduct(id);
+      await this.props.getProduct(id);
       closeFullScreenLoader();
       if (!this.props.product?.id) return this.props.history.push("/products");
 
@@ -110,10 +109,6 @@ class ProductEdit extends Component {
     }
     catch (err) {
       closeFullScreenLoader();
-      if ([403].includes(err.response?.status)) {
-        logout();
-        this.props.history.push("/");
-      }
       this.props.history.push("/products");
     }
   };
@@ -157,10 +152,6 @@ class ProductEdit extends Component {
     }
     catch (err) {
       closeFullScreenLoader();
-      if ([403].includes(err.response?.status)) {
-        logout();
-        this.props.history.push("/");
-      }
       this.props.history.push("/products");
     }
   };

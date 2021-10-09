@@ -23,7 +23,7 @@ class SignIn extends Component {
   /**
    * Make sign in request and set session auth on app
    */
-  handleSignIn = async e => {
+  handleSignIn = async (e) => {
     try {
       e.preventDefault();
       showFullScreenLoader();

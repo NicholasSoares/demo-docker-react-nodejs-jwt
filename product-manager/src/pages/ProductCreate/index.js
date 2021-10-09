@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Dinero from "dinero.js";
 import * as dayjs from 'dayjs';
-import { logout } from "../../services/authService";
 import { Container } from "./styles";
 import { connect } from "react-redux";
 import { createProduct } from "../../store/actions/products";
@@ -116,10 +115,6 @@ class ProductCreate extends Component {
     }
     catch (err) {
       closeFullScreenLoader();
-      if ([403].includes(err.response?.status)) {
-        logout();
-        this.props.history.push("/");
-      }
       showErrorMessage('Internal server error, try again later.');
     }
   };

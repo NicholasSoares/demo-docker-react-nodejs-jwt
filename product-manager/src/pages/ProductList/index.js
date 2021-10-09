@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Container } from "./styles";
-import { logout } from "../../services/authService";
 import { showFullScreenLoader, closeFullScreenLoader, showErrorMessage } from "../../services/swalService";
 import ProductsTableList from "./components/ProductsTableList";
 import Pagination from "./components/Pagination";
@@ -34,13 +33,7 @@ class ProductList extends Component {
     }
     catch (err) {
       closeFullScreenLoader();
-      if ([403].includes(err.response?.status)) {
-        logout();
-        this.props.history.push("/");
-      }
-      else {
-        showErrorMessage('Internal server error, try again later.');
-      }
+      showErrorMessage('Internal server error, try again later.');
     }
   }
 

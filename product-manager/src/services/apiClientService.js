@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "./authService";
+import { getToken, logout } from "./authService";
 
 /**
  * Create an new axios instance
@@ -17,6 +17,21 @@ apiClientService.interceptors.request.use(async config => {
     config.headers.common["x-access-token"] = token;
   }
   return config;
+});
+
+/**
+ * Check if an auth error response was received
+ * and execute and page reload to log out the user
+ * except if in the sign in page
+ */
+apiClientService.interceptors.response.use( (response) => {
+  return response;
+}, function (error) {
+  if ([403].includes(error.response?.status) && error.response?.config.url !== '/user/token') {
+    logout();
+    window.location.reload();
+  }
+  return Promise.reject(error);
 });
 
 export default apiClientService;

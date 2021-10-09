@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { logout } from "../../../../services/authService";
-import Swal from 'sweetalert2';
 import { connect } from "react-redux";
 import { deleteProduct } from "../../../../store/actions/products";
 import { showFullScreenLoader, closeFullScreenLoader } from "../../../../services/swalService";
@@ -19,14 +17,7 @@ class RemoveProductButton extends Component {
       this.props.fetchProducts();
     }
     catch (err) {
-      closeFullScreenLoader();
-      if ([403].includes(err.response?.status)) {
-        logout();
-        this.props.history.push("/");
-      }
-      else {
-        window.location.reload();
-      }
+      window.location.reload();
     }
   }
 
