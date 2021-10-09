@@ -51,11 +51,13 @@ class SignIn extends Component {
           <input
             type="email"
             placeholder="E-mail address"
+            autoComplete="current-username"
             onChange={e => this.setState({ email: e.target.value })}
           />
           <input
             type="password"
             placeholder="Password"
+            autoComplete="current-password"
             onChange={e => this.setState({ password: e.target.value })}
           />
           <button type="submit">Sign In</button>
