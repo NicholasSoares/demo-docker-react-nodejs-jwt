@@ -26,9 +26,9 @@ class ProductList extends Component {
    */
   fetchProducts = async () => {
     try {
-      const { index, offset, field, direction } = this.props;
+      const { index, limit, field, direction } = this.props;
       showFullScreenLoader();
-      await this.props.listProducts(index, offset, field, direction);
+      await this.props.listProducts(index, limit, field, direction);
       closeFullScreenLoader();
     }
     catch (err) {
@@ -65,7 +65,7 @@ const mapStateToProps = (state) => {
     products: state.productListReducer.products,
     totalProducts: state.productListReducer.totalProducts,
     index: state.productListReducer.index,
-    offset: state.productListReducer.offset,
+    limit: state.productListReducer.limit,
     field: state.productListReducer.field,
     direction: state.productListReducer.direction
   };

@@ -3,11 +3,11 @@ import apiClientService from "./apiClientService";
 /**
  * Query API and return list of products filtered with given params
  */
-export const listApiProducts = (indexList, offsetList, fieldName, directionName) => {
+export const listApiProducts = (indexList, limitList, fieldName, directionName) => {
     return apiClientService.get("/product", {
         params: {
             index: indexList,
-            offset: offsetList,
+            limit: limitList,
             field: fieldName,
             direction: directionName,
         }

@@ -14,8 +14,8 @@ class Pagination extends Component {
   /**
    * Check if can navigate forward in the product list
    */
-  canGoForward = (index, offset, productCount) => {
-    return index + offset < productCount;
+  canGoForward = (index, limit, productCount) => {
+    return index + limit < productCount;
   }
 
   /**
@@ -24,7 +24,7 @@ class Pagination extends Component {
   navigateBack = (e) => {
     e.preventDefault();
     if (this.canGoBack(this.props.index)) {
-      this.changePage(this.props.index - this.props.offset);
+      this.changePage(this.props.index - this.props.limit);
     }
   }
 
@@ -33,8 +33,8 @@ class Pagination extends Component {
    */
   navigateForward = (e) => {
     e.preventDefault();
-    if (this.canGoForward(this.props.index, this.props.offset, this.props.totalProducts)) {
-      this.changePage(this.props.index + this.props.offset);
+    if (this.canGoForward(this.props.index, this.props.limit, this.props.totalProducts)) {
+      this.changePage(this.props.index + this.props.limit);
     }
   }
 
@@ -42,8 +42,8 @@ class Pagination extends Component {
    * Navigate in the product list
    */
   changePage = (indexCount) => {
-    const { offset, field, direction } = this.props;
-    this.props.sortProducts(indexCount, offset, field, direction)
+    const { limit, field, direction } = this.props;
+    this.props.sortProducts(indexCount, limit, field, direction)
       .then(() => {
         this.props.fetchProducts();
       });
@@ -78,7 +78,7 @@ const mapStateToProps = (state) => {
   return {
     totalProducts: state.productListReducer.totalProducts,
     index: state.productListReducer.index,
-    offset: state.productListReducer.offset,
+    limit: state.productListReducer.limit,
     field: state.productListReducer.field,
     direction: state.productListReducer.direction
   };

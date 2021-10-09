@@ -10,7 +10,7 @@ const initialState = {
     productCount: 0,
     products: [],
     index: 0,
-    offset: 10,
+    limit: 10,
     field: 'id',
     direction: 'ASC'
 };
@@ -32,7 +32,7 @@ function productListReducer(productList = initialState, action) {
             return {
                 ...productList,
                 index: payload.indexList,
-                offset: payload.offsetList,
+                limit: payload.limitList,
                 field: payload.fieldName,
                 direction: payload.directionName,
             };

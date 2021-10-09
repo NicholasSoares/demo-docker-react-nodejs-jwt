@@ -26,15 +26,17 @@ module.exports.findById = async (productId) => {
 /**
  * List and filter products
  */
-module.exports.list = async (queryLimit, queryOffset, orderByField, orderByDirection) => {
+module.exports.list = async (queryOffset, queryLimit, orderByField, orderByDirection) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!allowedFilterFields.includes(orderByField)) orderByField = 'id';
             if(!allowedOrderingDirections.includes(orderByDirection)) orderByDirection = 'ASC';
+            if(isNaN((parseInt(queryOffset))) || queryOffset < 0) queryOffset = 0;
+            if(isNaN((parseInt(queryLimit))) || queryLimit < 0) queryLimit = 10;
 
             let result = await products.findAndCountAll({
-                offset: queryLimit,
-                limit: queryOffset,
+                offset: queryOffset,
+                limit: queryLimit,
                 order: [
                     [orderByField, orderByDirection]
                 ]

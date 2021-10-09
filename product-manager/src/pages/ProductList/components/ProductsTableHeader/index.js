@@ -32,7 +32,7 @@ class ProductsTableHeader extends Component {
    */
   sortProducts = (fieldName) => {
     let orderingDirection;
-    const { index, offset, field, direction } = this.props;
+    const { index, limit, field, direction } = this.props;
 
     if (fieldName === field) {
       orderingDirection = (direction === 'DESC') ? 'ASC' : 'DESC';
@@ -41,7 +41,7 @@ class ProductsTableHeader extends Component {
       orderingDirection = 'ASC'
     }
 
-    this.props.sortProducts(index, offset, fieldName, orderingDirection)
+    this.props.sortProducts(index, limit, fieldName, orderingDirection)
       .then(() => {
         this.props.fetchProducts();
       });
@@ -93,7 +93,7 @@ const mapStateToProps = (state) => {
   return {
     totalProducts: state.productListReducer.totalProducts,
     index: state.productListReducer.index,
-    offset: state.productListReducer.offset,
+    limit: state.productListReducer.limit,
     field: state.productListReducer.field,
     direction: state.productListReducer.direction
   };

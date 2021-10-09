@@ -28,11 +28,11 @@ export const listProducts = (indexList, offsetList, fieldName, directionName) =>
 /**
  * Set query sorting params on redux storage
  */
-export const sortProducts = (indexList, offsetList, fieldName, directionName) => async (dispatch) => {
+export const sortProducts = (indexList, limitList, fieldName, directionName) => async (dispatch) => {
     try {
         dispatch({
             type: SORT_PRODUCTS,
-            payload: { indexList, offsetList, fieldName, directionName },
+            payload: { indexList, limitList, fieldName, directionName },
         });
         return Promise.resolve();
     } catch (err) {

@@ -9,7 +9,7 @@ module.exports.listProducts = async (req,res,next) => {
     try{
         let products = await productRepository.list(
             req.query.index,
-            req.query.offset,
+            req.query.limit,
             req.query.field,
             req.query.direction
         );
