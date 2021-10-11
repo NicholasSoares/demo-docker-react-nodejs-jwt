@@ -13,7 +13,7 @@ const initialState = {
 /**
  * User reducers for sign in page
  */
-function userReducer(authUser = initialState, action) {
+function authUserReducer(authUser = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
@@ -28,4 +28,4 @@ function userReducer(authUser = initialState, action) {
     }
 }
 
-export default userReducer;
+export default authUserReducer;

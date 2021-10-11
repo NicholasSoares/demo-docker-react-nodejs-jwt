@@ -72,7 +72,7 @@ class SignIn extends Component {
  */
 const mapStateToProps = (state) => {
   return {
-    userToken: state.userReducer.token,
+    userToken: state.authUserReducer.token,
   };
 };
 
