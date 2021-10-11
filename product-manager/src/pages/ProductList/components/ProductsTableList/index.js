@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as dayjs from 'dayjs';
+import ProductsTableListField from "../ProductsTableListField";
 import UpdateProductButton from "../UpdateProductButton";
 import RemoveProductButton from "../RemoveProductButton";
 import { connect } from "react-redux";
@@ -25,12 +26,12 @@ class ProductsTableList extends Component {
         return (
             this.props.products.map((product, index) => (
                 <tr key={index}>
-                    <th scope="row">{product.id}</th>
-                    <td>{product.name}</td>
-                    <td>{this.formatValue(product.price)}</td>
-                    <td>{product.is_perishable.toString()}</td>
-                    <td>{(product.void_at) ? this.formatDate(product.void_at) : "None"}</td>
-                    <td>{this.formatDate(product.manufactured_at)}</td>
+                    <ProductsTableListField colName={'id'} colValue={product.id}/>
+                    <ProductsTableListField colName={'name'} colValue={product.name}/>
+                    <ProductsTableListField colName={'price'} colValue={this.formatValue(product.price)}/>
+                    <ProductsTableListField colName={'is_perishable'} colValue={product.is_perishable.toString()}/>
+                    <ProductsTableListField colName={'void_at'} colValue={(product.void_at) ? this.formatDate(product.void_at) : "None"}/>
+                    <ProductsTableListField colName={'manufactured_at'} colValue={this.formatDate(product.manufactured_at)}/>
                     <td className="text-center">
                         <UpdateProductButton productId={product.id} />
                         <RemoveProductButton fetchProducts={this.props.fetchProducts} productId={product.id} />
