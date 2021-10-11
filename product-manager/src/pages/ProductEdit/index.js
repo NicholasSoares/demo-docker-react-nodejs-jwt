@@ -91,12 +91,22 @@ class ProductEdit extends Component {
    */
   fetchProduct = async () => {
     try {
+      /**
+       * Get request id and fetch product data with screen blocked during request
+       */
       showFullScreenLoader();
       const { id } = this.props.match.params;
       await this.props.getProduct(id);
       closeFullScreenLoader();
+
+      /**
+       * Check if product was found, and if not redirect to listing page
+       */
       if (!this.props.product?.id) return this.props.history.push("/products");
 
+      /**
+       * Set form state with fetched product data
+       */
       this.setState({
         id: this.props.product.id,
         name: this.props.product.name,
