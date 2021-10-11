@@ -11,7 +11,7 @@ class ProductsTableList extends Component {
      * Format timestamp to date
      */
     formatDate = (date) => {
-        return dayjs(date)?.format('DD-MM-YYYY');
+        return dayjs(date)?.format('DD/MM/YYYY');
     }
 
     /**
