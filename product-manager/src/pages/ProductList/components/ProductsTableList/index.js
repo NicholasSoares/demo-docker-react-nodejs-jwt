@@ -26,15 +26,38 @@ class ProductsTableList extends Component {
         return (
             this.props.products.map((product, index) => (
                 <tr key={index}>
-                    <ProductsTableListField colName={'id'} colValue={product.id}/>
-                    <ProductsTableListField colName={'name'} colValue={product.name}/>
-                    <ProductsTableListField colName={'price'} colValue={this.formatValue(product.price)}/>
-                    <ProductsTableListField colName={'is_perishable'} colValue={product.is_perishable.toString()}/>
-                    <ProductsTableListField colName={'void_at'} colValue={(product.void_at) ? this.formatDate(product.void_at) : "None"}/>
-                    <ProductsTableListField colName={'manufactured_at'} colValue={this.formatDate(product.manufactured_at)}/>
+                    <ProductsTableListField
+                        colName={'id'}
+                        colValue={product.id}
+                    />
+                    <ProductsTableListField
+                        colName={'name'}
+                        colValue={product.name}
+                    />
+                    <ProductsTableListField
+                        colName={'price'}
+                        colValue={this.formatValue(product.price)}
+                    />
+                    <ProductsTableListField
+                        colName={'is_perishable'}
+                        colValue={product.is_perishable.toString()}
+                    />
+                    <ProductsTableListField
+                        colName={'void_at'}
+                        colValue={(product.void_at) ? this.formatDate(product.void_at) : "None"}
+                    />
+                    <ProductsTableListField
+                        colName={'manufactured_at'}
+                        colValue={this.formatDate(product.manufactured_at)}
+                    />
                     <td className="text-center">
-                        <UpdateProductButton productId={product.id} />
-                        <RemoveProductButton fetchProducts={this.props.fetchProducts} productId={product.id} />
+                        <UpdateProductButton
+                            productId={product.id}
+                        />
+                        <RemoveProductButton
+                            fetchProducts={this.props.fetchProducts}
+                            productId={product.id}
+                        />
                     </td>
                 </tr>
             )
