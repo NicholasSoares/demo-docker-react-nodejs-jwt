@@ -1,5 +1,6 @@
 import {
-    GET_USER_AUTH
+    SET_USER_AUTH,
+    REMOVE_USER_AUTH
 } from "../actions/types";
 
 /**
@@ -17,12 +18,14 @@ function authUserReducer(authUser = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
-        case GET_USER_AUTH:
+        case SET_USER_AUTH:
             return {
                 ...authUser,
                 auth: payload.auth,
                 token: payload.token
             };
+        case REMOVE_USER_AUTH:
+            return initialState;
         default:
             return authUser;
     }
